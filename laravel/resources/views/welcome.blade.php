@@ -59,8 +59,8 @@
 				
 				<!-- Tutaj jest karuzela z przyciskami -->
 				<div class="col-8" style="
-					background: url('https://i.stack.imgur.com/7YKUD.jpg')
-					no-repeat fixed center">
+						background: url('https://i.stack.imgur.com/7YKUD.jpg')
+						no-repeat fixed center">
 					
 					<hr class="my-4">
 					

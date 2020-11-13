@@ -33,7 +33,7 @@
 				padding-left: 10px;
 				padding-right: 10px;
 			}
-			.col-md-8, .col-md-4 {
+			.col-md-6, .col-md-3 {
 				padding-top: 30px;
 				padding-bottom: 30px;
 				padding-left: 30px;
@@ -56,14 +56,15 @@
 		<!-- navbar -->
 		@php
 		$user= session('data')['LM1'];
-        $name=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+        $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
 		 
-		
+		$village_list = DB::table('villages')->select('id','name')->where('id_player', $uname->id)->orderBy('name')->get();
+
         @endphp
 
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: wheat;">
 
-             <a class="navbar-brand"> Gracz {{$name->login}} </a>
+             <a class="navbar-brand"> Gracz {{$uname->login}} </a>
 				<button class="navbar-toggler"
 						type="button"
 						data-toggle="collapse"
@@ -96,15 +97,51 @@
 						</li>
 					</ul>
 				</div>
-            </nav>
+			</nav>
 			
+			<!-- Nowy kod -->
+			<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(167, 172, 120, 0.473);">
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						@foreach ($village_list as $vlist)
+						<form method="post" action="cache_village">
+							<input type="hidden"
+								name="_token"
+								value="<?php echo csrf_token(); ?>">
+							<input type="hidden"
+								name="id_village"
+								value="<?php echo($vlist->id);?>">
+
+								<li class=nav-item><a classnav-lin type=submit>{{$vlist->name}} </a></li>
+						
+						
+							
+						
+						@endforeach
+					</ul>
+				</div>
+            </nav>
+			<!-- !Nowy kod -->
+							
         </header>
 		
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 			
+				<!-- To z lewej -->
+				<div class="col-md-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"> Jednostki </h5>
+							<p class="card-text"> Tu będą jednostki gracza. </p>
+							<h5 class="card-title"> Raporty </h5>
+							<p class="card-text"> Tu będą raporty. </p>
+						</div>
+					</div>
+				</div>
+			
 				<!-- Budynki -->
-				<div class="col-md-8">
+				<div class="col-md-6">
 				
 					<div class="row">
 						<div class="col-sm-6">
@@ -112,8 +149,11 @@
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Ratusz </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<p class="card-text"> Poziom: X. </p>
+									<a href=" {{ url("/castle") }} "
+											class="btn btn-primary">
+										Przejdź
+									</a>
 								</div>
 							</div>
 						</div>
@@ -121,9 +161,9 @@
 							<div class="card">
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
-									<h5 class="card-title"> Kopalnia cegieł </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<h5 class="card-title"> Cegielnia </h5>
+									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Produkcja na godzinę: Y. </p>
 								</div>
 							</div>
 						</div>
@@ -137,8 +177,11 @@
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Koszary </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<p class="card-text"> Poziom: X. </p>
+									<a href=" {{ url("/barracks") }} "
+											class="btn btn-primary">
+										Przejdź
+									</a>
 								</div>
 							</div>
 						</div>
@@ -146,9 +189,9 @@
 							<div class="card">
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
-									<h5 class="card-title"> Kopalnia stali </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<h5 class="card-title"> Huta stali </h5>
+									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Produkcja na godzinę: Y. </p>
 								</div>
 							</div>
 						</div>
@@ -162,8 +205,11 @@
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Pałac </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<p class="card-text"> Poziom: X. </p>
+									<a href=" {{ url("/palace") }} "
+											class="btn btn-primary">
+										Przejdź
+									</a>
 								</div>
 							</div>
 						</div>
@@ -171,9 +217,9 @@
 							<div class="card">
 								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
 								<div class="card-body">
-									<h5 class="card-title"> Kopalnia drewna </h5>
-									<p class="card-text"> Jakiś tekst może. </p>
-									<a href="#" class="btn btn-primary"> Przejdź </a>
+									<h5 class="card-title"> Tartak </h5>
+									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Produkcja na godzinę: Y. </p>
 								</div>
 							</div>
 						</div>
@@ -181,12 +227,12 @@
 					
 				</div>
 				
-				<!-- To z boku -->
-				<div class="col-md-4">
+				<!-- To z prawej -->
+				<div class="col-md-3">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title"> Jednostki </h5>
-							<p class="card-text"> Tu będą jednostki gracza. </p>
+							<h5 class="card-title"> Wiadomości </h5>
+							<p class="card-text"> Tu będą wiadomości. </p>
 							<h5 class="card-title"> Aktualności </h5>
 							<p class="card-text"> Tu będą aktualności. </p>
 						</div>

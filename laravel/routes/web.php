@@ -52,6 +52,20 @@ Route::get('/logout', function () {
    return redirect('/');
 });
 
+Route::get('/castle', function () {
+   return view('castle');
+});
+
+Route::get('/barracks', function () {
+   return view('barracks');
+});
+
+Route::get('/palace', function () {
+   return view('palace');
+});
+
+
+Route::post('cache_village', 'KWC@cache_village');
 
 Route::post('PostNews','NewsController@insert');
 
