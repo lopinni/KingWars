@@ -146,6 +146,22 @@
 					echo('</table>');
 					
 					
+					/* deprecated loop
+					echo('<table>');
+					for ($i=1; $i<16; $i++){
+						echo('<tr>');
+						for ($j=1; $j<16; $j++){ 
+							echo('<td>');
+							if(in_array($i,$xarr) &&
+								$j == $yarr[array_search($i,$xarr)])
+									echo('<img src="wioska_80x80.png">');
+							else 	echo('<img src="puste_80x80.png">');
+							echo('</td>');
+						}
+						echo('</tr>');
+					}
+					echo('</table>');
+					*/
 				?>
 				
 			</div>

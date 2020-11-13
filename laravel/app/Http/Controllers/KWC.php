@@ -48,16 +48,34 @@ class KWC extends Controller
 			)
 				if(!strcmp($password,$database->password)){
 					$request->session()->put('data', $request->input());
-					$pid = DB::table('players')->select('id')->where('login', $name_email)->orWhere('email', $name_email)->first();
-					$$base_villag = DB::table('villages')->select('id', 'name')->where('id_player',$pid->id)->orderBy('name')->first();
-					session()->put('active_village', ['id'=>$base_village->id, 'name'=>$base_village->name]);
-
+					
 					return redirect('village_view');
 				}
 		}
 		echo('Niepoprawna nazwa użytkownika i/lub hasło');
 	}
 
+	
+	/*public function username_disp(){
+		$dbkey = session('data')->get('LM1');
+
+		$database = DB::table('players')
+						->where('login','=',$dbkey)
+						->first();
+		if ($database!=NULL)
+			return strval($dbkey);
+		
+		$database = DB::table('players')
+						->where('emai;','=',$dbkey)
+						->first();
+
+		if ($database!=NULL){
+			return strval(DB::table('players')
+					->where('email','=', $dbkey)
+					->get('name'));
+		}
+		echo("that's not supposed to happen");
+	}*/
 
 	public function register(Request $request){
 		
@@ -91,29 +109,15 @@ class KWC extends Controller
 				->select('id')
 				->where('login', session()->get('data')['LM1'])
 				->orWhere('email', session()->get('data')['LM1'])
-				->first();	
-
+				->first();
+				
 		if (DB::table('villages')
 				->select('id_player')
 				->where('id_player', $id->id)
 				->first() == NULL)
 			return redirect('new_village');
-		else{
-			
+		else
 			return view('village_view');
-		}
-			
-	}
-
-	public function cache_village(Request $request){
-		$id = $request->input('id_village');
-		$name = DB::table('villages')
-					->select('name')
-					->where('id', $id)
-					->first()->get();
-		session()->forget('active_village',['id',' name']);
-		session()->put('active_village', ['id'=>$id, 'name'=>$name]);
-		return view('village_view');
 	}
 	
 }

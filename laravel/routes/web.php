@@ -53,8 +53,6 @@ Route::get('/logout', function () {
 });
 
 
-Route::post('cache_village', 'KWC@cache_village');
-
 Route::post('PostNews','NewsController@insert');
 
 Route::post('CostUnits','NewsController@change_unit');

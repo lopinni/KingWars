@@ -56,15 +56,14 @@
 		<!-- navbar -->
 		@php
 		$user= session('data')['LM1'];
-        $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+        $name=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
 		 
-		$village_list = DB::table('villages')->select('id','name')->where('id_player', $uname->id)->orderBy('name')->get();
-
+		
         @endphp
 
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: wheat;">
 
-             <a class="navbar-brand"> Gracz {{$uname->login}} </a>
+             <a class="navbar-brand"> Gracz {{$name->login}} </a>
 				<button class="navbar-toggler"
 						type="button"
 						data-toggle="collapse"
@@ -97,32 +96,8 @@
 						</li>
 					</ul>
 				</div>
-			</nav>
-			
-			<!-- Nowy kod -->
-			<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(167, 172, 120, 0.473);">
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						@foreach ($village_list as $vlist)
-						<form method="post" action="cache_village">
-							<input type="hidden"
-								name="_token"
-								value="<?php echo csrf_token(); ?>">
-							<input type="hidden"
-								name="id_village"
-								value="<?php echo($vlist->id);?>">
-
-								<li class=nav-item><a classnav-lin type=submit>{{$vlist->name}} </a></li>
-						
-						
-							
-						
-						@endforeach
-					</ul>
-				</div>
             </nav>
-			<!-- !Nowy kod -->
-							
+			
         </header>
 		
 		<div class="container">
