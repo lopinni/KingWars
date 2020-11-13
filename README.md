@@ -1,6 +1,6 @@
 # KingWars
 
---- Konfiguracja - w folderze projektu:
+--- Konfiguracja:
 
 git init
 
@@ -14,6 +14,6 @@ git remote add origin https://github.com/lopinni/KingWars.git
 
 git push -u -f origin master
 
---- Pobieranie z repo - w folderze projektu:
+--- Pobieranie z repo - w folderze nad projektem:
 
 git clone https://github.com/lopinni/KingWars.git
