@@ -49,13 +49,18 @@
         @php
 		
         $user= session('data')['LM1'];
-        $name=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+        $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+		
+		$active_v = session('active_village')['id'];
+		
+			#lista wiosek użytkownika
+		$village_list = DB::table('villages')->select('id','name','x_coordinate','y_coordinate')->where('id_player', $uname->id)->orderBy('name')->get();
 
         @endphp
 
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: wheat;">
 
-             <a class="navbar-brand"> Gracz {{$name->login}} </a>
+             <a class="navbar-brand"> Gracz {{$uname->login}} </a>
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
              </button>
@@ -86,6 +91,28 @@
                  
                </ul>
              </div>
+			</nav>
+			
+			<!-- Nowy kod -->
+			<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(167, 172, 120, 0.473);">
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						
+							
+							@foreach ($village_list as $vlist)
+
+								@if ($vlist->id == session()->get('active_village')['id'])
+									<li class="nav-item">{{$vlist->name}}</li>
+
+								@else
+								
+								<li class=nav-link><a classnav-lin href="/map_view/{{$vlist->id}}">{{$vlist->name}}</a>  </li>
+									
+								@endif
+							
+							@endforeach
+					</ul>
+				</div>
             </nav>
         </header>
 		
@@ -95,8 +122,7 @@
 				<?php
 					$my_coords = DB::table('villages')
 										->select('x_coordinate', 'y_coordinate')
-										->where('id_player', $name->id)
-										->orderBy('name', 'asc')
+										->where('id', $active_v)
 										->first();
 
 					$y_coor = DB::select('select y_coordinate
@@ -108,7 +134,10 @@
 											
 					foreach ($x_coor as $x) $xarr[] = $x->x_coordinate;
 					foreach ($y_coor as $y) $yarr[] = $y->y_coordinate;
-
+					foreach ($village_list as $my) {
+						$mxarr[] = $my->x_coordinate;
+						$myarr[] = $my->y_coordinate;
+					}
 					$border_size=7;
 					$map_size=100;
 
@@ -132,11 +161,27 @@
 							for ($i=$x_pointer; $i<=$x_pointer+2*$border_size; $i++){
 								echo('<td>');
 								if(in_array($i,$xarr) &&
-									$j == $yarr[array_search($i,$xarr)])
-										if($i == $my_coords->x_coordinate && $j == $my_coords->y_coordinate)
-											echo('<a href="village_view"><img src="moja_wioska_80x80.png">');
-										else
-											echo('<img src="wioska_80x80.png">');
+									$j == $yarr[array_search($i,$xarr)]){
+										if(in_array($i,$mxarr) && $j == $myarr[array_search($i,$mxarr)]){
+											$my_href = DB::table('villages')
+															->select('id')
+															->where('y_coordinate', $j)
+															->where('x_coordinate', $i)
+															->first();
+											echo '<a href="village_view/',$my_href->id,'">
+													<img src="moja_wioska_80x80.png"> </a>';
+											}
+										else{
+												$ref_id = DB::table('villages')
+															->select('id')
+															->where('y_coordinate', $j)
+															->where('x_coordinate', $i)
+															->first();
+											echo '<a href="village_inspect/',$ref_id->id,'">
+													<img src="wioska_80x80.png"> </a>';
+
+											}
+										}
 								else
 								 	echo('<img src="puste_80x80.png">');
 							echo('</td>');
@@ -144,8 +189,7 @@
 						echo('</tr>');
 					}
 					echo('</table>');
-					
-					
+						
 				?>
 				
 			</div>

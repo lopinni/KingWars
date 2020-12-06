@@ -17,6 +17,14 @@ Route::get('/',[
     'uses' => 'NewsController@index'
 ]);
 
+Route::get('/error1',[
+    'uses' => 'Playercontroller@error1'
+]);
+
+Route::get('/error2',[
+    'uses' => 'Playercontroller@error2'
+]);
+
 Route::get ('/admin', function () {
    return view('admin_form');
 });
@@ -35,8 +43,41 @@ Route::get('/new_village', function () {
 
 Route::get('/village_view', 'KWC@first_village');
 
+Route::get('/village_view/{id}', function ($id){
+
+	$name = DB::table('villages')
+					->select('id', 'name')
+					->where('id', $id)
+					->first();
+	session()->put('active_village', ['id'=>$name->id, 'name'=>$name->name]);
+    return redirect('village_view');
+   
+});
+
 Route::get('/map_view', function () {
    return view('map_view');
+});
+
+Route::get('/map_view/{id}', function ($id){
+
+	$name = DB::table('villages')
+					->select('id', 'name')
+					->where('id', $id)
+					->first();
+   session()->put('active_village', ['id'=>$name->id, 'name'=>$name->name]);
+   return redirect('map_view');
+   
+});
+
+Route::get('/village_inspect/{id}', function ($id){
+
+	$name = DB::table('villages')
+					->select('id')
+					->where('id', $id)
+					->first();
+   session()->put('village_inspect', ['id'=>$name->id]);
+   return redirect('village_inspect');
+   
 });
 
 Route::get('/ranking', function () {
@@ -80,3 +121,6 @@ Route::post('LogAdmin','KWC@admin');
 Route::post('LogUser','KWC@user');
 
 Route::post('RegUser','KWC@register');
+
+Route::post('/null', function () {
+});

@@ -53,15 +53,88 @@
 		
         <header>
 		
-		<!-- navbar -->
+		
 		@php
 		$user= session('data')['LM1'];
         $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
 		 
+
+		#lista wiosek użytkownika
 		$village_list = DB::table('villages')->select('id','name')->where('id_player', $uname->id)->orderBy('name')->get();
+		
+		
+		$rathaus = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'ratusz')
+							->first();
+
+		$wood_quarry = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'tartak')
+							->first();
+
+		$steel_quarry = DB::table('village_buildings  as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'huta')
+							->first();
+
+		$brick_quarry = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'cegielnia')
+							->first();
+
+		$palace = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'pałac')
+							->first();
+		
+		$soldier_quarry = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'koszary')
+							->first();
+		
+		$unit_pikeman = DB::table('village_units as vu')
+							->join('units as u', 'vu.id_unit', 'u.id')
+							->select('number')
+							->where('vu.id_village', session('active_village')['id'])
+							->where('u.name', 'pikinier')
+							->first();
+
+		$unit_sordman = DB::table('village_units as vu')
+							->join('units as u', 'vu.id_unit', 'u.id')
+							->select('number')
+							->where('vu.id_village', session('active_village')['id'])
+							->where('u.name', 'miecznik')
+							->first();
+		
+		$unit_axman = DB::table('village_units as vu')
+							->join('units as u', 'vu.id_unit', 'u.id')
+							->select('number')
+							->where('vu.id_village', session('active_village')['id'])
+							->where('u.name', 'topornik')
+							->first();
+
+		$unit_knight = DB::table('village_units as vu')
+							->join('units as u', 'vu.id_unit', 'u.id')
+							->select('number')
+							->where('vu.id_village', session('active_village')['id'])
+							->where('u.name', 'rycerz')
+							->first();
 
         @endphp
-
+		<!-- navbar -->
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: wheat;">
 
              <a class="navbar-brand"> Gracz {{$uname->login}} </a>
@@ -99,25 +172,24 @@
 				</div>
 			</nav>
 			
-			<!-- Nowy kod -->
+			<!-- wioska -->
 			<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(167, 172, 120, 0.473);">
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
-						@foreach ($village_list as $vlist)
-						<form method="post" action="cache_village">
-							<input type="hidden"
-								name="_token"
-								value="<?php echo csrf_token(); ?>">
-							<input type="hidden"
-								name="id_village"
-								value="<?php echo($vlist->id);?>">
-
-								<li class=nav-item><a classnav-lin type=submit>{{$vlist->name}} </a></li>
-						
 						
 							
-						
-						@endforeach
+							@foreach ($village_list as $vlist)
+
+								@if ($vlist->id == session()->get('active_village')['id'])
+									<li class="nav-item">{{$vlist->name}}</li>
+
+								@else
+								
+								<li class=nav-link><a classnav-lin href="/village_view/{{$vlist->id}}">{{$vlist->name}}</a>  </li>
+									
+								@endif
+							
+							@endforeach
 					</ul>
 				</div>
             </nav>
@@ -133,7 +205,11 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"> Jednostki </h5>
-							<p class="card-text"> Tu będą jednostki gracza. </p>
+							<p class="card-text"> Pikinierzy: {{$unit_pikeman ?? 0}}</p>
+							<p class="card-text"> Miecznicy: {{$unit_sordman ?? 0}}</p>
+							<p class="card-text"> Topornicy: {{$unit_axman ?? 0}}</p>
+							<p class="card-text"> Rycerze: {{$unit_knight ?? 0}}</p>
+
 							<h5 class="card-title"> Raporty </h5>
 							<p class="card-text"> Tu będą raporty. </p>
 						</div>
@@ -146,10 +222,16 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="ratusz.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Ratusz </h5>
-									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Poziom: 
+										@if ($rathaus == NULL)
+											0
+										@else
+											{{$rathaus->level}}
+										@endif
+										</p>
 									<a href=" {{ url("/castle") }} "
 											class="btn btn-primary">
 										Przejdź
@@ -159,11 +241,12 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="cegielnia.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Cegielnia </h5>
-									<p class="card-text"> Poziom: X. </p>
-									<p class="card-text"> Produkcja na godzinę: Y. </p>
+									<p class="card-text"> Poziom: {{$brick_quarry->level ?? 1}}</p>
+									<p class="card-text"> Produkcja na godzinę: @if ($brick_quarry == NULL) 10 @else {{($brick_quarry->level)*10}}  @endif. </p> 
+									
 								</div>
 							</div>
 						</div>
@@ -174,10 +257,16 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="koszary.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Koszary </h5>
-									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Poziom: 
+									@if ($soldier_quarry == NULL)
+										0
+									@else
+										{{$soldier_quarry ->level}}
+									@endif
+										. </p>
 									<a href=" {{ url("/barracks") }} "
 											class="btn btn-primary">
 										Przejdź
@@ -187,11 +276,18 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="huta.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Huta stali </h5>
-									<p class="card-text"> Poziom: X. </p>
-									<p class="card-text"> Produkcja na godzinę: Y. </p>
+									<p class="card-text"> Poziom: 
+									@if ($steel_quarry == NULL)
+										1
+										<p class="card-text"> Produkcja na godzinę: 10. </p>
+									@else
+										{{$steel_quarry ->level}}
+										<p class="card-text"> Produkcja na godzinę: {{$steel_quarry->level*10}}. </p>
+									@endif </p>
+									
 								</div>
 							</div>
 						</div>
@@ -202,10 +298,16 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="pałac.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Pałac </h5>
-									<p class="card-text"> Poziom: X. </p>
+									<p class="card-text"> Poziom: 
+									@if ($palace == NULL)
+										0
+									@else
+										{{$palace ->level}}
+									@endif
+										. </p>
 									<a href=" {{ url("/palace") }} "
 											class="btn btn-primary">
 										Przejdź
@@ -215,11 +317,18 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="card">
-								<img class="card-img-top" src=".../100px180/" alt="Zdjęcie budynku">
+								<img class="card-img-top" src="tartak.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Tartak </h5>
-									<p class="card-text"> Poziom: X. </p>
-									<p class="card-text"> Produkcja na godzinę: Y. </p>
+									<p class="card-text"> Poziom: 
+									@if ($wood_quarry == NULL)
+										1
+										<p class="card-text"> Produkcja na godzinę: 10. </p>
+									@else
+										{{$wood_quarry ->level}}.
+									@endif
+										 </p>
+									
 								</div>
 							</div>
 						</div>

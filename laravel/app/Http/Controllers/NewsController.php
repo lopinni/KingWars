@@ -21,7 +21,7 @@ class NewsController extends Controller
 	
 	public function insert(Request $request) {
 		$date = $request->input('date1');
-		$content = $request->input('TA1');
+		$content = filter_var(strval($request->input('TA1')), FILTER_SANITIZE_STRING);
 		
 		DB::table('news')->insert([
 			'date'=>$date,
@@ -31,9 +31,9 @@ class NewsController extends Controller
 	}
    
 	public function change_unit(Request $request) {
-		$name = $request->input('select1');
-		$steel = $request->input('costS');
-		$wood = $request->input('costW');
+		$name = filter_var(strval($request->input('select1')), FILTER_SANITIZE_STRING);
+		$steel = filter_var($request->input('costS'), FILTER_VALIDATE_INT);
+		$wood = filter_var($request->input('costW'), FILTER_VALIDATE_INT);
 		
 		DB::table('units')
 			->where('name', $name)
@@ -45,10 +45,10 @@ class NewsController extends Controller
 	}
    
 	public function change_building(Request $request) {
-		$name = $request->input('select2');
-		$level = $request->input('select3');
-		$brick = $request->input('costB2');
-		$wood = $request->input('costW2');
+		$name = filter_var(strval($request->input('select2')), FILTER_SANITIZE_STRING);
+		$level = filter_var($request->input('select3'), FILTER_VALIDATE_INT);
+		$brick = filter_var($request->input('costB2'), FILTER_VALIDATE_INT);
+		$wood = filter_var($request->input('costW2'), FILTER_VALIDATE_INT);
 		
 		DB::table('buildings')
 			->where([
