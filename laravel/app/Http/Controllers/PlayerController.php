@@ -34,4 +34,49 @@ class PlayerController extends Controller
 		');
 		return view('error2',['news'=>$news]);
 	}
+	
+	public function addBrick(Request $request) {
+		$added_bricks = $request->input('addedBrick');
+		$id = $request->input('villageID');
+		$original_bricks = DB::table('villages')
+							->select('brick')
+							->where('id', $id)
+							->first();
+		$added_bricks += $original_bricks->brick;
+		DB::table('villages')
+			->where('id', $id)
+			->update(['brick' => $added_bricks,
+					'last_collected' => date("Y-m-d h:i:s")]);
+		return view('village_view');
+	}
+	
+	public function addSteel(Request $request) {
+		$added_steel = $request->input('addedSteel');
+		$id = $request->input('villageID');
+		$original_steel = DB::table('villages')
+							->select('steel')
+							->where('id', $id)
+							->first();
+		$added_steel += $original_steel->steel;
+		DB::table('villages')
+			->where('id', $id)
+			->update(['steel' => $added_steel,
+					'last_collected' => date("Y-m-d h:i:s")]);
+		return view('village_view');
+	}
+	
+	public function addWood(Request $request) {
+		$added_wood = $request->input('addedWood');
+		$id = $request->input('villageID');
+		$original_wood = DB::table('villages')
+							->select('wood')
+							->where('id', $id)
+							->first();
+		$added_wood += $original_wood->wood;
+		DB::table('villages')
+			->where('id', $id)
+			->update(['wood' => $added_wood,
+					'last_collected' => date("Y-m-d h:i:s")]);
+		return view('village_view');
+	}
 }

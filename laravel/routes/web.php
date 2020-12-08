@@ -122,5 +122,11 @@ Route::post('LogUser','KWC@user');
 
 Route::post('RegUser','KWC@register');
 
+Route::post('AddBrick','Playercontroller@addBrick');
+
+Route::post('AddSteel','Playercontroller@addSteel');
+
+Route::post('AddWood','Playercontroller@addWood');
+
 Route::post('/null', function () {
 });

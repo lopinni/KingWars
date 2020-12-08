@@ -203,30 +203,35 @@
         if(isset($_GET['edit_login'])) { 
 			if( DB::table('players')
 					->select('login')
-					->where('login', filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING))
+					->where('login',
+					filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING))
 					->first() == NULL ) {
 				DB::table('players')
 					->where('login', $name->login)
-					->update(['login' => filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING)]);
-				session()->put('data',['LM1' => filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING)]);
+					->update(['login' => 
+					filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING)]);
+				session()->put('data',['LM1' => 
+					filter_var(strval($_GET['new_login']), FILTER_SANITIZE_STRING)]);
 			}
-            else echo 	'<script type="text/JavaScript">  
-							alert("Podana nazwa użytkownika już istnieje"); 
-						</script>' ;
+            else echo '<script type="text/JavaScript">
+							alert("Podana nazwa użytkownika już istnieje");
+						</script>';
         }
 		
 		if(isset($_GET['edit_email'])) {
 			if( DB::table('players')
 					->select('email')
-					->where('email', filter_var(strval($_GET['new_email']), FILTER_SANITIZE_EMAIL))
+					->where('email',
+					filter_var(strval($_GET['new_email']), FILTER_SANITIZE_EMAIL))
 					->first() == NULL ) {
 				DB::table('players')
 					->where('login', $name->login)
-					->update(['email' => filter_var(strval($_GET['new_email']), FILTER_SANITIZE_EMAIL)]);
+					->update(['email' =>
+					filter_var(strval($_GET['new_email']), FILTER_SANITIZE_EMAIL)]);
 			}
-            else echo 	'<script type="text/JavaScript">  
-							alert("Podany adres e-mail już istnieje"); 
-						</script>' ;
+            else echo '<script type="text/JavaScript">
+							alert("Podany adres e-mail już istnieje");
+						</script>';
         }
 		
 		if(isset($_GET['edit_pass'])) {
@@ -234,14 +239,16 @@
 					->select('password')
 					->where('login', $name->login)
 					->first()
-					->password == filter_var(strval($_GET['old_pass']), FILTER_SANITIZE_STRING)) {
+					->password == hash('sha512',
+					filter_var(strval($_GET['old_pass']), FILTER_SANITIZE_STRING))){
 				DB::table('players')
 					->where('login', $name->login)
-					->update(['password' => filter_var(strval($_GET['new_pass']), FILTER_SANITIZE_STRING)]);
+					->update(['password' => hash('sha512',
+					filter_var(strval($_GET['new_pass']), FILTER_SANITIZE_STRING))]);
 			}
-            else echo 	'<script type="text/JavaScript">  
-							alert("Podane hasło jest nieprawidłowe"); 
-						</script>' ;
+            else echo '<script type="text/JavaScript">
+							alert("Podane hasło jest nieprawidłowe");
+						</script>';
         }
 		
 		if(isset($_GET['delete_acc'])) {
@@ -249,15 +256,16 @@
 					->select('password')
 					->where('login', $name->login)
 					->first()
-					->password == filter_var(strval($_GET['delete_pass']), FILTER_SANITIZE_STRING) ) {
+					->password == hash('sha512',
+					filter_var(strval($_GET['delete_pass']), FILTER_SANITIZE_STRING))){
 				DB::table('players')
 					->where('login', $name->login)
 					->delete();
 				echo '<script> window.location = "/"; </script>';
 			}
-            else echo 	'<script type="text/JavaScript">  
-							alert("Podane hasło jest nieprawidłowe"); 
-						</script>' ;
+            else echo '<script type="text/JavaScript">
+							alert("Podane hasło jest nieprawidłowe");
+						</script>';
         } 
     ?> 
 	

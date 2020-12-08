@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 19 Paź 2020, 21:09
+-- Czas generowania: 09 Gru 2020, 00:20
 -- Wersja serwera: 10.4.11-MariaDB
--- Wersja PHP: 7.4.6
+-- Wersja PHP: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -43,7 +44,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `login`, `email`, `password`, `salt`) VALUES
-(1, 'hlep', 'heniek@bruh.y', 'kek', '12');
+(1, 'hlep', 'heniek@bruh.y', '6a1a778143e4672886991729035807cabeb75ad42a3fe4bf580cfbdf5cea7c476705d878af5f0fd0dc07d19f2959e224b21788e561f046177f6752b4bcc59e2c', '12');
 
 -- --------------------------------------------------------
 
@@ -58,9 +59,37 @@ CREATE TABLE `buildings` (
   `cost_brick` int(10) NOT NULL,
   `cost_wood` int(10) NOT NULL,
   `build_time` time(6) NOT NULL,
-  `points` int(10) NOT NULL,
-  `image_dir` varchar(255) NOT NULL
+  `points` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `buildings`
+--
+
+INSERT INTO `buildings` (`id`, `name`, `level`, `cost_brick`, `cost_wood`, `build_time`, `points`) VALUES
+(1, 'ratusz', 2, 100, 100, '00:01:00.000000', 100),
+(2, 'ratusz', 3, 200, 200, '00:02:00.000000', 200),
+(3, 'ratusz', 4, 400, 400, '00:40:00.000000', 500),
+(4, 'ratusz', 5, 1600, 1600, '01:30:00.000000', 1500),
+(5, 'tartak', 2, 100, 100, '00:01:00.000000', 100),
+(6, 'tartak', 3, 200, 200, '00:03:00.000000', 150),
+(7, 'tartak', 4, 300, 300, '00:05:00.000000', 200),
+(8, 'tartak', 5, 400, 400, '00:12:00.000000', 400),
+(9, 'huta', 2, 100, 100, '00:01:00.000000', 100),
+(10, 'huta', 3, 100, 100, '00:03:00.000000', 150),
+(11, 'huta', 4, 200, 200, '00:05:00.000000', 200),
+(12, 'huta', 5, 300, 300, '00:12:00.000000', 400),
+(13, 'cegielnia', 2, 100, 100, '00:01:00.000000', 100),
+(14, 'cegielnia', 3, 200, 200, '00:03:00.000000', 150),
+(15, 'cegielnia', 4, 300, 300, '00:05:00.000000', 200),
+(16, 'cegielnia', 5, 400, 400, '00:12:00.000000', 400),
+(17, 'koszary', 1, 300, 300, '00:30:00.000000', 300),
+(18, 'koszary', 2, 500, 500, '00:30:00.000000', 300),
+(19, 'koszary', 3, 1000, 1000, '01:00:00.000000', 1000),
+(20, 'koszary', 4, 1500, 1500, '01:30:00.000000', 1300),
+(21, 'pałac', 1, 2000, 2000, '02:00:00.000000', 2000),
+(22, 'pałac', 2, 5000, 5000, '03:00:00.000000', 5000),
+(23, 'pałac', 3, 10000, 10000, '04:00:00.000000', 10000);
 
 -- --------------------------------------------------------
 
@@ -74,20 +103,6 @@ CREATE TABLE `build_queue` (
   `id_building` int(10) NOT NULL,
   `started` datetime NOT NULL,
   `completed` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `comment`
---
-
-CREATE TABLE `comment` (
-  `id` int(10) NOT NULL,
-  `id_thread` int(10) NOT NULL,
-  `id_player` int(10) NOT NULL,
-  `seq_number` int(10) NOT NULL,
-  `content` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -148,6 +163,7 @@ CREATE TABLE `invitation_status` (
 
 CREATE TABLE `messages` (
   `id` int(10) NOT NULL,
+  `subject` varchar(55) NOT NULL,
   `content` varchar(255) NOT NULL,
   `id_from` int(10) NOT NULL,
   `id_to` int(10) NOT NULL
@@ -171,7 +187,8 @@ CREATE TABLE `news` (
 
 INSERT INTO `news` (`id`, `date`, `content`) VALUES
 (1, '2020-09-23', 'Dodano autoinkrementację tabeli \'news\'. '),
-(2, '2020-09-23', 'Dodano poprawne wyświetlanie ostatnich aktualności. ');
+(2, '2020-09-23', 'Dodano poprawne wyświetlanie ostatnich aktualności. '),
+(3, '2020-12-16', 'Wykonano większość funkcjonalności.');
 
 -- --------------------------------------------------------
 
@@ -184,7 +201,6 @@ CREATE TABLE `players` (
   `login` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL,
   `password` varchar(512) NOT NULL,
-  `salt` varchar(512) NOT NULL,
   `points` int(10) NOT NULL,
   `id_guild` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -193,10 +209,9 @@ CREATE TABLE `players` (
 -- Zrzut danych tabeli `players`
 --
 
-INSERT INTO `players` (`id`, `login`, `email`, `password`, `salt`, `points`, `id_guild`) VALUES
-(1, 'heniwk', 'a@a.a', 'kek', '1', 1, NULL),
-(2, 'bruh', 'kek@bruh.y', 'asda', '1', 12, NULL),
-(3, 'maciej', 'nie@no.nein', 'soo', '512', 17, NULL);
+INSERT INTO `players` (`id`, `login`, `email`, `password`, `points`, `id_guild`) VALUES
+(1, 'heniwk', 'bartosz_bochenski@gmail.com', '25b71c5cbece9c7d61d758cc27b592e5700e2a0fb7f13e4fd8daed9b33cf98f5d8f1d6701c0a0098fe548d8fe1d506f8969595974e7e9b69bc0f65a9522305d0', 1, NULL),
+(3, 'maciej', 'maciejsojka@gmail.com', '554ce39b28175c6287dbaf9f8cb75b3a282eb5e918c40c21f844542fbced7d67e3933b56b9ec2b00837232342fc20122d2d966ecf30c5fd86634346c87250cf9', 17, NULL);
 
 -- --------------------------------------------------------
 
@@ -217,20 +232,6 @@ CREATE TABLE `reports` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `thread`
---
-
-CREATE TABLE `thread` (
-  `id` int(10) NOT NULL,
-  `name` varchar(55) NOT NULL,
-  `id_guild` int(10) NOT NULL,
-  `last_seq_num` int(10) NOT NULL,
-  `deleted` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Struktura tabeli dla tabeli `units`
 --
 
@@ -243,6 +244,17 @@ CREATE TABLE `units` (
   `attack` int(10) NOT NULL,
   `defense` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `units`
+--
+
+INSERT INTO `units` (`id`, `name`, `cost_steel`, `cost_wood`, `recruit_time`, `attack`, `defense`) VALUES
+(1, 'pikinier', 50, 50, '00:10:00.000000', 50, 50),
+(2, 'miecznik', 100, 50, '00:15:00.000000', 40, 120),
+(3, 'topornik', 50, 100, '00:15:00.000000', 100, 60),
+(4, 'rycerz', 200, 200, '00:30:00.000000', 160, 160),
+(5, 'osadnik', 2000, 2000, '02:00:00.000000', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -274,16 +286,18 @@ CREATE TABLE `villages` (
   `id_player` int(10) DEFAULT NULL,
   `steel` int(10) NOT NULL,
   `wood` int(10) NOT NULL,
-  `brick` int(10) NOT NULL
+  `brick` int(10) NOT NULL,
+  `last_collected` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `villages`
 --
 
-INSERT INTO `villages` (`id`, `name`, `x_coordinate`, `y_coordinate`, `points`, `id_player`, `steel`, `wood`, `brick`) VALUES
-(1, 'chlebak', 15, 12, 0, 1, 0, 0, 0),
-(2, 'bochnia', 5, 14, 0, 1, 0, 0, 0);
+INSERT INTO `villages` (`id`, `name`, `x_coordinate`, `y_coordinate`, `points`, `id_player`, `steel`, `wood`, `brick`, `last_collected`) VALUES
+(1, 'chlebak', 15, 12, 0, 1, 0, 0, 0, '2020-12-08 11:13:37'),
+(2, 'bochnia', 5, 14, 0, 1, 0, 0, 0, '2020-12-08 11:16:04'),
+(3, 'trzecia', 48, 1, 100, 3, 0, 0, 0, '2020-12-08 11:07:22');
 
 -- --------------------------------------------------------
 
@@ -296,6 +310,21 @@ CREATE TABLE `village_buildings` (
   `level` int(3) DEFAULT NULL,
   `id_village` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `village_buildings`
+--
+
+INSERT INTO `village_buildings` (`id_building`, `level`, `id_village`) VALUES
+(5, 1, 1),
+(5, 1, 2),
+(5, 1, 3),
+(9, 1, 1),
+(9, 1, 2),
+(9, 1, 3),
+(13, 1, 1),
+(13, 1, 2),
+(13, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -334,14 +363,6 @@ ALTER TABLE `buildings`
 ALTER TABLE `build_queue`
   ADD UNIQUE KEY `id_village` (`id_village`),
   ADD UNIQUE KEY `id_building` (`id_building`);
-
---
--- Indeksy dla tabeli `comment`
---
-ALTER TABLE `comment`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_thread` (`id_thread`),
-  ADD UNIQUE KEY `id_player` (`id_player`);
 
 --
 -- Indeksy dla tabeli `guilds`
@@ -405,13 +426,6 @@ ALTER TABLE `reports`
   ADD KEY `id_target` (`id_target`);
 
 --
--- Indeksy dla tabeli `thread`
---
-ALTER TABLE `thread`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `GUILD` (`id_guild`);
-
---
 -- Indeksy dla tabeli `units`
 --
 ALTER TABLE `units`
@@ -459,13 +473,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT dla tabeli `buildings`
 --
 ALTER TABLE `buildings`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT dla tabeli `comment`
---
-ALTER TABLE `comment`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT dla tabeli `guilds`
@@ -495,13 +503,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT dla tabeli `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT dla tabeli `players`
 --
 ALTER TABLE `players`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `reports`
@@ -510,22 +518,16 @@ ALTER TABLE `reports`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `thread`
---
-ALTER TABLE `thread`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT dla tabeli `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT dla tabeli `villages`
 --
 ALTER TABLE `villages`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -537,13 +539,6 @@ ALTER TABLE `villages`
 ALTER TABLE `build_queue`
   ADD CONSTRAINT `B` FOREIGN KEY (`id_building`) REFERENCES `buildings` (`id`),
   ADD CONSTRAINT `V` FOREIGN KEY (`id_village`) REFERENCES `villages` (`id`);
-
---
--- Ograniczenia dla tabeli `comment`
---
-ALTER TABLE `comment`
-  ADD CONSTRAINT `COMMENTER` FOREIGN KEY (`id_player`) REFERENCES `players` (`id`),
-  ADD CONSTRAINT `THREAD` FOREIGN KEY (`id_thread`) REFERENCES `thread` (`id`);
 
 --
 -- Ograniczenia dla tabeli `guilds`
@@ -587,12 +582,6 @@ ALTER TABLE `reports`
   ADD CONSTRAINT `TARGET` FOREIGN KEY (`id_target`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `thread`
---
-ALTER TABLE `thread`
-  ADD CONSTRAINT `GUILD` FOREIGN KEY (`id_guild`) REFERENCES `guilds` (`id`);
-
---
 -- Ograniczenia dla tabeli `unit_queue`
 --
 ALTER TABLE `unit_queue`
@@ -618,88 +607,6 @@ ALTER TABLE `village_buildings`
 ALTER TABLE `village_units`
   ADD CONSTRAINT `UNT` FOREIGN KEY (`id_unit`) REFERENCES `units` (`id`),
   ADD CONSTRAINT `VLLG` FOREIGN KEY (`id_village`) REFERENCES `villages` (`id`);
-
-
---
--- Metadane
---
-USE `phpmyadmin`;
-
---
--- Metadane dla tabeli admin
---
-
---
--- Metadane dla tabeli buildings
---
-
---
--- Metadane dla tabeli build_queue
---
-
---
--- Metadane dla tabeli comment
---
-
---
--- Metadane dla tabeli guilds
---
-
---
--- Metadane dla tabeli guilds_diplomacy
---
-
---
--- Metadane dla tabeli invitations
---
-
---
--- Metadane dla tabeli invitation_status
---
-
---
--- Metadane dla tabeli messages
---
-
---
--- Metadane dla tabeli news
---
-
---
--- Metadane dla tabeli players
---
-
---
--- Metadane dla tabeli reports
---
-
---
--- Metadane dla tabeli thread
---
-
---
--- Metadane dla tabeli units
---
-
---
--- Metadane dla tabeli unit_queue
---
-
---
--- Metadane dla tabeli villages
---
-
---
--- Metadane dla tabeli village_buildings
---
-
---
--- Metadane dla tabeli village_units
---
-
---
--- Metadane dla Bazy danych laravel
---
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

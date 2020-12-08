@@ -219,6 +219,17 @@
 				<!-- Budynki -->
 				<div class="col-md-6">
 				
+					<!-- OBLICZANIE CZASU -->
+					@php
+						$last_log = DB::table('villages')
+							->select('last_collected')
+							->where('id',session()->get('active_village')['id'])
+							->first();
+						$nowy = strtotime($last_log->last_collected);
+						$nowy2 = strtotime(date("Y-m-d h:i:s"));
+						$hours = intval((($nowy2-$nowy)/3600));	
+					@endphp
+				
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="card">
@@ -244,8 +255,30 @@
 								<img class="card-img-top" src="cegielnia.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Cegielnia </h5>
-									<p class="card-text"> Poziom: {{$brick_quarry->level ?? 1}}</p>
-									<p class="card-text"> Produkcja na godzinę: @if ($brick_quarry == NULL) 10 @else {{($brick_quarry->level)*10}}  @endif. </p> 
+									<p class="card-text"> Poziom: {{$brick_quarry->level ?? 1}} Produkcja na godzinę:
+										@if ($brick_quarry == NULL) 10
+										@else {{($brick_quarry->level)*10}}
+										@endif
+									</p>
+									
+									@if ($hours > 0)
+										<form action = "/AddBrick" method = "post">
+											<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+											<button type="submit" class="btn btn-success">
+												Zbierz surowce
+											</button>
+											<input type = "hidden"
+													name = "addedBrick"
+													value = "<?php echo(($brick_quarry->level)*1000*$hours); ?>">
+											<input type = "hidden"
+													name = "villageID"
+													value = "<?php echo(session()->get('active_village')['id']); ?>">
+										</form>
+									@else
+										<button type="button" class="btn btn-success" disabled>
+											Surowce sa dostępne co godzinę
+										</button>
+									@endif
 									
 								</div>
 							</div>
@@ -279,14 +312,30 @@
 								<img class="card-img-top" src="huta.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Huta stali </h5>
-									<p class="card-text"> Poziom: 
-									@if ($steel_quarry == NULL)
-										1
-										<p class="card-text"> Produkcja na godzinę: 10. </p>
+									<p class="card-text"> Poziom: {{$steel_quarry->level ?? 1}} Produkcja na godzinę:
+										@if ($steel_quarry == NULL) 10
+										@else {{($steel_quarry->level)*10}}
+										@endif
+									</p>
+									
+									@if ($hours > 0)
+										<form action = "/AddSteel" method = "post">
+											<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+											<button type="submit" class="btn btn-success">
+												Zbierz surowce
+											</button>
+											<input type = "hidden"
+													name = "addedSteel"
+													value = "<?php echo(($steel_quarry->level)*1000*$hours); ?>">
+											<input type = "hidden"
+													name = "villageID"
+													value = "<?php echo(session()->get('active_village')['id']); ?>">
+										</form>
 									@else
-										{{$steel_quarry ->level}}
-										<p class="card-text"> Produkcja na godzinę: {{$steel_quarry->level*10}}. </p>
-									@endif </p>
+										<button type="button" class="btn btn-success" disabled>
+											Surowce sa dostępne co godzinę
+										</button>
+									@endif
 									
 								</div>
 							</div>
@@ -320,14 +369,30 @@
 								<img class="card-img-top" src="tartak.jpg" alt="Zdjęcie budynku">
 								<div class="card-body">
 									<h5 class="card-title"> Tartak </h5>
-									<p class="card-text"> Poziom: 
-									@if ($wood_quarry == NULL)
-										1
-										<p class="card-text"> Produkcja na godzinę: 10. </p>
+									<p class="card-text"> Poziom: {{$wood_quarry->level ?? 1}} Produkcja na godzinę:
+										@if ($wood_quarry == NULL) 10
+										@else {{($wood_quarry->level)*10}}
+										@endif
+									</p>
+									
+									@if ($hours > 0)
+										<form action = "/AddWood" method = "post">
+											<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+											<button type="submit" class="btn btn-success">
+												Zbierz surowce
+											</button>
+											<input type = "hidden"
+													name = "addedWood"
+													value = "<?php echo(($wood_quarry->level)*1000*$hours); ?>">
+											<input type = "hidden"
+													name = "villageID"
+													value = "<?php echo(session()->get('active_village')['id']); ?>">
+										</form>
 									@else
-										{{$wood_quarry ->level}}.
+										<button type="button" class="btn btn-success" disabled>
+											Surowce sa dostępne co godzinę
+										</button>
 									@endif
-										 </p>
 									
 								</div>
 							</div>
