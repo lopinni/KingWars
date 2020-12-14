@@ -114,49 +114,18 @@
 				$tgt_data = DB::table('villages as v')->join('players as p', 'v.id_player', 'p.id')
 					->select('v.name as vname', 'v.x_coordinate as x', 'v.y_coordinate as y', 'v.points as points', 'p.login as pname')
 					->where('v.id', $tgt_id)->first();
-
-
-
-				/*$tgt_pikemen = DB::table('village_units as vu')
-								->join('units as u', 'vu.id_unit', 'u.id')
-								->select('number')
-								->where('vu.id_village', $tgt_id)
-								->where('u.name', 'pikinier')
-								->first();
-
-				$tgt_sordman = DB::table('village_units as vu')
-								->join('units as u', 'vu.id_unit', 'u.id')
-								->select('number')
-								->where('vu.id_village', $tgt_id)
-								->where('u.name', 'miecznik')
-								->first();
-
-				$tgt_axman = DB::table('village_units as vu')
-								->join('units as u', 'vu.id_unit', 'u.id')
-								->select('number')
-								->where('vu.id_village', $tgt_id)
-								->where('u.name', 'topornik')
-								->first();
-
-				$tgt_knight = DB::table('village_units as vu')
-								->join('units as u', 'vu.id_unit', 'u.id')
-								->select('number')
-								->where('vu.id_village', $tgt_id)
-								->where('u.name', 'rycerz')
-								->first();*/
 					
 				?>
 				
 				<div class="container">
-					<div class="container text-center"><h4>Wioska {{$tgt_data->vname}} gracza {{$tgt_data->pname}}. </h4> </div>
+					<div class="container text-center"><h4> {{$tgt_data->vname}}. </h4> </div>
 					<div class="container text-center">
 						<div class="container padding-top: 20px"> Lokacja na mapie: {{$tgt_data->x}}, {{$tgt_data->y}}.</div>
 
-						<button type="button"
-							class="btn btn-dark"
-							href="/attack_form">
+						<a href=/attack_form><button type="button"
+							class="btn btn-dark">
 							zaatakuj
-						</button>
+						</button></a>
 
 					</div>
 				</div>

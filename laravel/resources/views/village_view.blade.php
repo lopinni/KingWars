@@ -58,7 +58,7 @@
 		$user= session('data')['LM1'];
         $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
 		 
-
+		$av = session('active_village')['id'];
 		#lista wiosek użytkownika
 		$village_list = DB::table('villages')->select('id','name')->where('id_player', $uname->id)->orderBy('name')->get();
 		
@@ -107,31 +107,31 @@
 		
 		$unit_pikeman = DB::table('village_units')
 							->select('number')
-							->where('id_village', session('active_village')['id'])
+							->where('id_village', $av)
 							->where('id_unit', '1')
 							->first();
 
-		$unit_pikeman = DB::table('village_units')
+		$unit_swordman = DB::table('village_units')
 							->select('number')
-							->where('id_village', session('active_village')['id'])
+							->where('id_village', $av)
 							->where('id_unit', '2')
 							->first();
 		
-		$unit_pikeman = DB::table('village_units')
+		$unit_axeman = DB::table('village_units')
 							->select('number')
-							->where('id_village', session('active_village')['id'])
+							->where('id_village', $av)
 							->where('id_unit', '3')
 							->first();
 
-		$unit_pikeman = DB::table('village_units')
+		$unit_knight = DB::table('village_units')
 							->select('number')
-							->where('id_village', session('active_village')['id'])
+							->where('id_village', $av)
 							->where('id_unit', '4')
 							->first();
 		
-		$unit_pikeman = DB::table('village_units')
+		$unit_settler = DB::table('village_units')
 							->select('number')
-							->where('id_village', session('active_village')['id'])
+							->where('id_village', $av)
 							->where('id_unit', '5')
 							->first();
 
@@ -207,11 +207,11 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"> Jednostki </h5>
-							<p class="card-text"> Pikinierzy: {{$unit_pikeman->number ?? 0}}</p>
-							<p class="card-text"> Miecznicy: {{$unit_sordman->number ?? 0}}</p>
-							<p class="card-text"> Topornicy: {{$unit_axman->number ?? 0}}</p>
-							<p class="card-text"> Rycerze: {{$unit_knight->number ?? 0}}</p>
-							<p class="card-text"> Osadnicy: {{$unit_knight->number ?? 0}}</p>
+							<p class="card-text"> Pikinierzy: {{$unit_pikeman->number }}</p>
+							<p class="card-text"> Miecznicy: {{$unit_swordman->number }}</p>
+							<p class="card-text"> Topornicy: {{$unit_axeman->number }}</p>
+							<p class="card-text"> Rycerze: {{$unit_knight->number}}</p>
+							<p class="card-text"> Osadnicy: {{$unit_settler->number }}</p>
 
 							<h5 class="card-title"> Raporty </h5>
 							<p class="card-text"> Tu będą raporty. </p>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2020 at 08:21 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- Generation Time: Dec 14, 2020 at 11:27 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -211,7 +211,10 @@ CREATE TABLE `players` (
 
 INSERT INTO `players` (`id`, `login`, `email`, `password`, `points`, `id_guild`) VALUES
 (1, 'heniwk', 'bartosz_bochenski@gmail.com', '25b71c5cbece9c7d61d758cc27b592e5700e2a0fb7f13e4fd8daed9b33cf98f5d8f1d6701c0a0098fe548d8fe1d506f8969595974e7e9b69bc0f65a9522305d0', 1, NULL),
-(3, 'maciej', 'maciejsojka@gmail.com', '554ce39b28175c6287dbaf9f8cb75b3a282eb5e918c40c21f844542fbced7d67e3933b56b9ec2b00837232342fc20122d2d966ecf30c5fd86634346c87250cf9', 17, NULL);
+(3, 'maciej', 'maciejsojka@gmail.com', '554ce39b28175c6287dbaf9f8cb75b3a282eb5e918c40c21f844542fbced7d67e3933b56b9ec2b00837232342fc20122d2d966ecf30c5fd86634346c87250cf9', 17, NULL),
+(8, 'zb', 'zbignie@w.pl', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', 0, NULL),
+(9, 'helga15', 'helga@gmail.pl', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', 0, NULL),
+(10, 'jan', 'janus@o2.pl', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -295,9 +298,11 @@ CREATE TABLE `villages` (
 --
 
 INSERT INTO `villages` (`id`, `name`, `x_coordinate`, `y_coordinate`, `points`, `id_player`, `steel`, `wood`, `brick`, `last_collected`) VALUES
-(1, 'chlebak', 15, 12, 0, 1, 0, 0, 0, '2020-12-08 11:13:37'),
-(2, 'bochnia', 5, 14, 0, 1, 0, 0, 0, '2020-12-08 11:16:04'),
-(3, 'trzecia', 48, 1, 100, 3, 0, 0, 0, '2020-12-08 11:07:22');
+(13, 'wioska 1 gracza zb', 1, 15, 0, 8, 0, 0, 0, '2020-12-14 07:16:43'),
+(14, 'wioska 1 gracza helga15', 1, 14, 0, 9, 0, 0, 0, '2020-12-14 07:27:39'),
+(16, 'wioska 1 gracza jan', 2, 15, 0, 10, 0, 0, 0, '2020-12-14 07:53:19'),
+(17, 'wioska 2 gracza helga15', 31, 22, 0, 9, 0, 0, 0, '2020-12-14 08:13:07'),
+(18, 'wioska 3 gracza helga15', 18, 15, 0, 9, 0, 0, 0, '2020-12-14 10:15:43');
 
 -- --------------------------------------------------------
 
@@ -316,17 +321,36 @@ CREATE TABLE `village_buildings` (
 --
 
 INSERT INTO `village_buildings` (`id_building`, `level`, `id_village`) VALUES
-(5, 1, 1),
-(5, 1, 2),
-(5, 1, 3),
-(9, 1, 1),
-(9, 1, 2),
-(9, 1, 3),
-(13, 1, 1),
-(13, 1, 2),
-(13, 1, 3),
-(18, 1, 3),
-(21, 1, 3);
+(1, 1, 13),
+(1, 1, 14),
+(1, 1, 16),
+(1, 1, 17),
+(1, 1, 18),
+(5, 1, 13),
+(5, 1, 14),
+(5, 1, 16),
+(5, 1, 17),
+(5, 1, 18),
+(9, 1, 13),
+(9, 1, 14),
+(9, 1, 16),
+(9, 1, 17),
+(9, 1, 18),
+(13, 1, 13),
+(13, 1, 14),
+(13, 1, 16),
+(13, 1, 17),
+(13, 1, 18),
+(17, 1, 13),
+(17, 1, 14),
+(17, 1, 16),
+(17, 1, 17),
+(17, 1, 18),
+(21, 1, 13),
+(21, 1, 14),
+(21, 1, 16),
+(21, 1, 17),
+(21, 1, 18);
 
 -- --------------------------------------------------------
 
@@ -346,11 +370,31 @@ CREATE TABLE `village_units` (
 --
 
 INSERT INTO `village_units` (`id_unit`, `number`, `available`, `id_village`) VALUES
-(1, 6, 6, 3),
-(2, 1, 1, 3),
-(3, 1, 1, 3),
-(4, 1, 1, 3),
-(5, 0, 0, 3);
+(1, 1, 0, 13),
+(1, 0, 0, 14),
+(1, 0, 0, 16),
+(1, 0, 0, 17),
+(1, 0, 0, 18),
+(2, 0, 0, 13),
+(2, 29310, 0, 14),
+(2, 0, 0, 16),
+(2, 0, 0, 17),
+(2, 0, 0, 18),
+(3, 0, 0, 13),
+(3, 0, 0, 14),
+(3, 0, 0, 16),
+(3, 0, 0, 17),
+(3, 0, 0, 18),
+(4, 0, 0, 13),
+(4, 0, 0, 14),
+(4, 0, 0, 16),
+(4, 0, 0, 17),
+(4, 0, 0, 18),
+(5, 0, 0, 13),
+(5, 0, 0, 14),
+(5, 1, 0, 16),
+(5, 0, 0, 17),
+(5, 0, 0, 18);
 
 --
 -- Indexes for dumped tables
@@ -522,7 +566,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `players`
 --
 ALTER TABLE `players`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -540,7 +584,7 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT for table `villages`
 --
 ALTER TABLE `villages`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

@@ -86,14 +86,6 @@
 			$user= session('data')['LM1'];
 			$name=DB::select('select login from players where login=? or email=? ',[$user,$user]);
 
-			if (session('active_village')!= NULL){
-				$legal_check = DB::table('players as p')->join('villages as v', 'p.id', 'v.id_player')
-								->join('village_units as vu', 'v.id', 'vu.id_village')->join('units as u', 'vu.id_unit', 'u.unit')
-								->select('vu.number as number')->where('u.name', 'osadnik')->where('p.name', $name)->first();
-				if ($legal_check == NULL || $legal_check->number == 0)
-					return redirect('village_view');
-			}
-			
 			
 			
         @endphp
@@ -122,7 +114,8 @@
                </ul>
              </div>
             </nav>
-        </header>
+		</header>
+		
 		
 		<div class="container profil">
 			<div style="background-color:wheat">

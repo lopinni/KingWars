@@ -160,9 +160,9 @@
 							echo('<tr>');
 							for ($i=$x_pointer; $i<=$x_pointer+2*$border_size; $i++){
 								echo('<td>');
-								if(in_array($i,$xarr) &&
-									$j == $yarr[array_search($i,$xarr)]){
-										if(in_array($i,$mxarr) && $j == $myarr[array_search($i,$mxarr)]){
+								if((in_array($i,$xarr) && $j == $yarr[array_search($i,$xarr)]) ||
+									(in_array($j,$yarr) && $i == $xarr[array_search($j,$yarr)])){
+										if ((in_array($i,$mxarr) && $j == $myarr[array_search($i,$mxarr)]) || (in_array($j,$myarr) && $i == $mxarr[array_search($j,$myarr)])){
 											$my_href = DB::table('villages')
 															->select('id')
 															->where('y_coordinate', $j)
@@ -183,7 +183,7 @@
 											}
 										}
 								else
-								 	echo('<img src="puste_80x80.png">');
+								 	echo('<a href="/new_village"><img src="puste_80x80.png"></a>');
 							echo('</td>');
 						}
 						echo('</tr>');

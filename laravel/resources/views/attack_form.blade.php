@@ -49,6 +49,7 @@
         @php
 		
         $user= session('data')['LM1'];
+        $av = session('active_village')['id'];
         $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
 		
 		$active_v = session('active_village')['id'];
@@ -101,14 +102,9 @@
 							
 							@foreach ($village_list as $vlist)
 
-								@if ($vlist->id == session()->get('active_village')['id'])
-									<li class="nav-item">{{$vlist->name}}</li>
-
-								@else
+								
 								
 								<li class=nav-link><a classnav-lin href="/map_view/{{$vlist->id}}">{{$vlist->name}}</a>  </li>
-									
-								@endif
 							
 							@endforeach
 					</ul>
@@ -116,20 +112,20 @@
             </nav>
         </header>
         <?php
-				$tgt_id = session()->get('village_inspect')['id'];
-				$tgt_data = DB::table('villages as v')->join('players as p', 'v.id_player', 'p.id')
-					->select('v.name as vname', 'v.x_coordinate as x', 'v.y_coordinate as y', 'v.points as points', 'p.login as pname')
-                    ->where('v.id', $tgt_id)->first();
 
-                $av_pikes = DB::table('village_units')->select('number')->where('id_player', $user)->where('id_unit', 1)->first();
-                $av_swords = DB::table('village_units')->select('number')->where('id_player', $user)->where('id_unit', 2)->first();
-                $av_axes = DB::table('village_units')->select('number')->where('id_player', $user)->where('id_unit', 3)->first();
-                $av_knights  = DB::table('village_units')->select('number')->where('id_player', $user)->where('id_unit', 4)->first();
+				$tgt_id = session()->get('village_inspect')['id'];
+				$tgt_data = DB::table('villages')->select('name')
+                    ->where('id', $tgt_id)->first();
+
+                $av_pikes = DB::table('village_units')->select('number')->where('id_village', $av)->where('id_unit', 1)->first();
+                $av_swords = DB::table('village_units')->select('number')->where('id_village', $av)->where('id_unit', 2)->first();
+                $av_axes = DB::table('village_units')->select('number')->where('id_village', $av)->where('id_unit', 3)->first();
+                $av_knights  = DB::table('village_units')->select('number')->where('id_village', $av)->where('id_unit', 4)->first();
                 ?>
 
 
         <div class="container" style="background-color:rgba(245, 222, 179, 0.096)">
-            <div class="container text-center"><h4>Atakujesz wioskę {{$tgt_data->vname}}. </h4> </div>
+            <div class="container text-center"><h4>Atakujesz wioskę {{$tgt_data->name}}. </h4> </div>
             <div class="container text-center padding-top: 20px">
                 <h5>wybierz, które jednostki wysyłasz do ataku.
                 <div class="container padding-top: 20px"></div>
@@ -137,28 +133,28 @@
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     <div class="form-group">
                         <label for="pikinier"> Ilość pikinierów (max. {{$av_pikes->number}}</label>
-                        <input type="number required|max:{{$av_pikes->number}}"
+                        <input type="number" max="{{$av_pikes->number}}"
                             class="form-control"
                             id="pikinier"
                             name="pikinier">
                     </div>
                     <div class="form-group">
                         <label for="miecznik"> Ilość mieczników (max. {{$av_swords->number}}</label>
-                        <input type="number required|max:{{$av_swords->number}}"
+                        <input type="number" max="{{$av_swords->number}}"
                             class="form-control"
                             id="miecznik"
                             name="miecznik">
                     </div>
                     <div class="form-group">
                         <label for="topornik"> Ilość toporników (max. {{$av_axes->number}}</label>
-                        <input type="number required|max:{{$av_axes->number}}"
+                        <input type="number" max="{{$av_axes->number}}"
                             class="form-control"
                             id="topornik"
                             name="topornik">
                     </div>
                     <div class="form-group">
                         <label for="rycerz"> Ilość rycerzy (max. {{$av_knights->number}}</label>
-                        <input type="number required|max:{{$av_knights->number}}"
+                        <input type="number" max="{{$av_knights->number}}"
                             class="form-control"
                             id="rycerz"
                             name="rycerz">
