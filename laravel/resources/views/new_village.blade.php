@@ -86,13 +86,14 @@
 			$user= session('data')['LM1'];
 			$name=DB::select('select login from players where login=? or email=? ',[$user,$user]);
 
-
-			$legal_check = DB::table('players as p')->join('villages as v', 'p.id', 'v.id_player')
-							->join('village_units as vu', 'v.id', 'vu.id_village')->join('units as u', 'vu.id_unit', 'u.unit')
-							->select('vu.number as number')->where('u.name', 'osadnik')->where('p.name' $name)->first();
-
-			if (session('active_village')!= NULL  && ($legal_check == NULL || $legal_check->number == 0))
-				return redirect('village_view');
+			if (session('active_village')!= NULL){
+				$legal_check = DB::table('players as p')->join('villages as v', 'p.id', 'v.id_player')
+								->join('village_units as vu', 'v.id', 'vu.id_village')->join('units as u', 'vu.id_unit', 'u.unit')
+								->select('vu.number as number')->where('u.name', 'osadnik')->where('p.name', $name)->first();
+				if ($legal_check == NULL || $legal_check->number == 0)
+					return redirect('village_view');
+			}
+			
 			
 			
         @endphp
@@ -112,16 +113,6 @@
             
              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                <ul class="navbar-nav mr-auto">
-			   <li class="nav-item">
-                   <a class="nav-link" href="ranking">Ranking </a>
-                 </li>
-               <!-- obecne -->
-                
-
-                 <!-- link -->
-                 <li class="nav-item">
-                   <a class="nav-link" href="profile">Profil</a>
-                 </li>
 
                  <!-- link -->
                  <li class="nav-item">
@@ -141,7 +132,7 @@
 					<div class="row align-items-start">
 						<div class="col">
 							<div class="text-right">
-								<button type="button" class="btn btn-success"> Północny zachód </button>
+								<a href="/nv/1" class="btn btn-success"> Północny zachód </a>
 							</div>
 						</div>
 						<div class="col">
@@ -150,7 +141,7 @@
 							</div>
 						</div>
 						<div class="col">
-							<button type="button" class="btn btn-success"> Północny wschód </button>
+							<a href="/nv/3" class="btn btn-success"> Północny wschód </a>
 						</div>
 					</div>
 					<div class="row align-items-center">
@@ -163,7 +154,7 @@
 							<div class="text-center">
 								<div class="kontener">
 									<img src="kompas.png" style="width:300px;height:300px;">
-									<button type="button" class="btn btn-success przycisk"> LOSOWY </button>
+									<a href="/nv/9" class="btn btn-success przycisk"> LOSOWY </a>
 								</div>
 							</div>
 						</div>
@@ -174,7 +165,7 @@
 					<div class="row align-items-end" style="padding-bottom:30px;">
 						<div class="col">
 							<div class="text-right">
-								<button type="button" class="btn btn-success"> Południowy zachód </button>
+								<a href="/nv/6" class="btn btn-success"> Południowy zachód </a>
 							</div>
 						</div>
 						<div class="col">
@@ -183,7 +174,7 @@
 							</div>
 						</div>
 						<div class="col">
-							<button type="button" class="btn btn-success"> Południowy wschód </button>
+							<a href="/nv/8" class="btn btn-success"> Południowy wschód </a>
 						</div>
 					</div>
 					

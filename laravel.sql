@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 09 Gru 2020, 00:20
--- Wersja serwera: 10.4.11-MariaDB
--- Wersja PHP: 7.4.3
+-- Generation Time: Dec 11, 2020 at 08:21 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `laravel`
+-- Database: `laravel`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `admin`
+-- Table structure for table `admin`
 --
 
 CREATE DATABASE laravel;
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`id`, `login`, `email`, `password`, `salt`) VALUES
@@ -49,7 +49,7 @@ INSERT INTO `admin` (`id`, `login`, `email`, `password`, `salt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `buildings`
+-- Table structure for table `buildings`
 --
 
 CREATE TABLE `buildings` (
@@ -63,7 +63,7 @@ CREATE TABLE `buildings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `buildings`
+-- Dumping data for table `buildings`
 --
 
 INSERT INTO `buildings` (`id`, `name`, `level`, `cost_brick`, `cost_wood`, `build_time`, `points`) VALUES
@@ -94,7 +94,7 @@ INSERT INTO `buildings` (`id`, `name`, `level`, `cost_brick`, `cost_wood`, `buil
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `build_queue`
+-- Table structure for table `build_queue`
 --
 
 CREATE TABLE `build_queue` (
@@ -108,7 +108,7 @@ CREATE TABLE `build_queue` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `guilds`
+-- Table structure for table `guilds`
 --
 
 CREATE TABLE `guilds` (
@@ -120,7 +120,7 @@ CREATE TABLE `guilds` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `guilds_diplomacy`
+-- Table structure for table `guilds_diplomacy`
 --
 
 CREATE TABLE `guilds_diplomacy` (
@@ -132,7 +132,7 @@ CREATE TABLE `guilds_diplomacy` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `invitations`
+-- Table structure for table `invitations`
 --
 
 CREATE TABLE `invitations` (
@@ -147,7 +147,7 @@ CREATE TABLE `invitations` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `invitation_status`
+-- Table structure for table `invitation_status`
 --
 
 CREATE TABLE `invitation_status` (
@@ -158,7 +158,7 @@ CREATE TABLE `invitation_status` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE `messages` (
@@ -172,7 +172,7 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `news`
+-- Table structure for table `news`
 --
 
 CREATE TABLE `news` (
@@ -182,7 +182,7 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `news`
+-- Dumping data for table `news`
 --
 
 INSERT INTO `news` (`id`, `date`, `content`) VALUES
@@ -193,7 +193,7 @@ INSERT INTO `news` (`id`, `date`, `content`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `players`
+-- Table structure for table `players`
 --
 
 CREATE TABLE `players` (
@@ -206,7 +206,7 @@ CREATE TABLE `players` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `players`
+-- Dumping data for table `players`
 --
 
 INSERT INTO `players` (`id`, `login`, `email`, `password`, `points`, `id_guild`) VALUES
@@ -216,7 +216,7 @@ INSERT INTO `players` (`id`, `login`, `email`, `password`, `points`, `id_guild`)
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `reports`
+-- Table structure for table `reports`
 --
 
 CREATE TABLE `reports` (
@@ -232,7 +232,7 @@ CREATE TABLE `reports` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `units`
+-- Table structure for table `units`
 --
 
 CREATE TABLE `units` (
@@ -246,7 +246,7 @@ CREATE TABLE `units` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `units`
+-- Dumping data for table `units`
 --
 
 INSERT INTO `units` (`id`, `name`, `cost_steel`, `cost_wood`, `recruit_time`, `attack`, `defense`) VALUES
@@ -259,7 +259,7 @@ INSERT INTO `units` (`id`, `name`, `cost_steel`, `cost_wood`, `recruit_time`, `a
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `unit_queue`
+-- Table structure for table `unit_queue`
 --
 
 CREATE TABLE `unit_queue` (
@@ -274,7 +274,7 @@ CREATE TABLE `unit_queue` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `villages`
+-- Table structure for table `villages`
 --
 
 CREATE TABLE `villages` (
@@ -291,7 +291,7 @@ CREATE TABLE `villages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `villages`
+-- Dumping data for table `villages`
 --
 
 INSERT INTO `villages` (`id`, `name`, `x_coordinate`, `y_coordinate`, `points`, `id_player`, `steel`, `wood`, `brick`, `last_collected`) VALUES
@@ -302,7 +302,7 @@ INSERT INTO `villages` (`id`, `name`, `x_coordinate`, `y_coordinate`, `points`, 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `village_buildings`
+-- Table structure for table `village_buildings`
 --
 
 CREATE TABLE `village_buildings` (
@@ -312,7 +312,7 @@ CREATE TABLE `village_buildings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Zrzut danych tabeli `village_buildings`
+-- Dumping data for table `village_buildings`
 --
 
 INSERT INTO `village_buildings` (`id_building`, `level`, `id_village`) VALUES
@@ -324,12 +324,14 @@ INSERT INTO `village_buildings` (`id_building`, `level`, `id_village`) VALUES
 (9, 1, 3),
 (13, 1, 1),
 (13, 1, 2),
-(13, 1, 3);
+(13, 1, 3),
+(18, 1, 3),
+(21, 1, 3);
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `village_units`
+-- Table structure for table `village_units`
 --
 
 CREATE TABLE `village_units` (
@@ -340,11 +342,22 @@ CREATE TABLE `village_units` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indeksy dla zrzutów tabel
+-- Dumping data for table `village_units`
+--
+
+INSERT INTO `village_units` (`id_unit`, `number`, `available`, `id_village`) VALUES
+(1, 6, 6, 3),
+(2, 1, 1, 3),
+(3, 1, 1, 3),
+(4, 1, 1, 3),
+(5, 0, 0, 3);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Indeksy dla tabeli `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`),
@@ -352,27 +365,27 @@ ALTER TABLE `admin`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indeksy dla tabeli `buildings`
+-- Indexes for table `buildings`
 --
 ALTER TABLE `buildings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `build_queue`
+-- Indexes for table `build_queue`
 --
 ALTER TABLE `build_queue`
   ADD UNIQUE KEY `id_village` (`id_village`),
   ADD UNIQUE KEY `id_building` (`id_building`);
 
 --
--- Indeksy dla tabeli `guilds`
+-- Indexes for table `guilds`
 --
 ALTER TABLE `guilds`
   ADD PRIMARY KEY (`id`),
   ADD KEY `LEADER` (`id_leader`);
 
 --
--- Indeksy dla tabeli `guilds_diplomacy`
+-- Indexes for table `guilds_diplomacy`
 --
 ALTER TABLE `guilds_diplomacy`
   ADD PRIMARY KEY (`id1`,`id2`),
@@ -380,7 +393,7 @@ ALTER TABLE `guilds_diplomacy`
   ADD KEY `2` (`id2`);
 
 --
--- Indeksy dla tabeli `invitations`
+-- Indexes for table `invitations`
 --
 ALTER TABLE `invitations`
   ADD PRIMARY KEY (`id`),
@@ -389,13 +402,13 @@ ALTER TABLE `invitations`
   ADD UNIQUE KEY `status` (`status`);
 
 --
--- Indeksy dla tabeli `invitation_status`
+-- Indexes for table `invitation_status`
 --
 ALTER TABLE `invitation_status`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `messages`
+-- Indexes for table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
@@ -403,13 +416,13 @@ ALTER TABLE `messages`
   ADD KEY `id_to` (`id_to`);
 
 --
--- Indeksy dla tabeli `news`
+-- Indexes for table `news`
 --
 ALTER TABLE `news`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `players`
+-- Indexes for table `players`
 --
 ALTER TABLE `players`
   ADD PRIMARY KEY (`id`),
@@ -418,7 +431,7 @@ ALTER TABLE `players`
   ADD KEY `id_guild` (`id_guild`);
 
 --
--- Indeksy dla tabeli `reports`
+-- Indexes for table `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
@@ -426,34 +439,34 @@ ALTER TABLE `reports`
   ADD KEY `id_target` (`id_target`);
 
 --
--- Indeksy dla tabeli `units`
+-- Indexes for table `units`
 --
 ALTER TABLE `units`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `unit_queue`
+-- Indexes for table `unit_queue`
 --
 ALTER TABLE `unit_queue`
   ADD UNIQUE KEY `id_village` (`id_village`),
   ADD UNIQUE KEY `id_unit` (`id_unit`);
 
 --
--- Indeksy dla tabeli `villages`
+-- Indexes for table `villages`
 --
 ALTER TABLE `villages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `PLAYER` (`id_player`);
 
 --
--- Indeksy dla tabeli `village_buildings`
+-- Indexes for table `village_buildings`
 --
 ALTER TABLE `village_buildings`
   ADD PRIMARY KEY (`id_building`,`id_village`),
   ADD KEY `VILLAGE` (`id_village`);
 
 --
--- Indeksy dla tabeli `village_units`
+-- Indexes for table `village_units`
 --
 ALTER TABLE `village_units`
   ADD PRIMARY KEY (`id_unit`,`id_village`),
@@ -464,97 +477,97 @@ ALTER TABLE `village_units`
 --
 
 --
--- AUTO_INCREMENT dla tabeli `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT dla tabeli `buildings`
+-- AUTO_INCREMENT for table `buildings`
 --
 ALTER TABLE `buildings`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT dla tabeli `guilds`
+-- AUTO_INCREMENT for table `guilds`
 --
 ALTER TABLE `guilds`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `invitations`
+-- AUTO_INCREMENT for table `invitations`
 --
 ALTER TABLE `invitations`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `invitation_status`
+-- AUTO_INCREMENT for table `invitation_status`
 --
 ALTER TABLE `invitation_status`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `messages`
+-- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `news`
+-- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT dla tabeli `players`
+-- AUTO_INCREMENT for table `players`
 --
 ALTER TABLE `players`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT dla tabeli `reports`
+-- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `units`
+-- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT dla tabeli `villages`
+-- AUTO_INCREMENT for table `villages`
 --
 ALTER TABLE `villages`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `build_queue`
+-- Constraints for table `build_queue`
 --
 ALTER TABLE `build_queue`
   ADD CONSTRAINT `B` FOREIGN KEY (`id_building`) REFERENCES `buildings` (`id`),
   ADD CONSTRAINT `V` FOREIGN KEY (`id_village`) REFERENCES `villages` (`id`);
 
 --
--- Ograniczenia dla tabeli `guilds`
+-- Constraints for table `guilds`
 --
 ALTER TABLE `guilds`
   ADD CONSTRAINT `LEADER` FOREIGN KEY (`id_leader`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `guilds_diplomacy`
+-- Constraints for table `guilds_diplomacy`
 --
 ALTER TABLE `guilds_diplomacy`
   ADD CONSTRAINT `1` FOREIGN KEY (`id1`) REFERENCES `guilds` (`id`),
   ADD CONSTRAINT `2` FOREIGN KEY (`id2`) REFERENCES `guilds` (`id`);
 
 --
--- Ograniczenia dla tabeli `invitations`
+-- Constraints for table `invitations`
 --
 ALTER TABLE `invitations`
   ADD CONSTRAINT `INVITED` FOREIGN KEY (`id_invited`) REFERENCES `players` (`id`),
@@ -562,47 +575,47 @@ ALTER TABLE `invitations`
   ADD CONSTRAINT `STATUS` FOREIGN KEY (`status`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `messages`
+-- Constraints for table `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `FROM` FOREIGN KEY (`id_from`) REFERENCES `players` (`id`),
   ADD CONSTRAINT `TO` FOREIGN KEY (`id_to`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `players`
+-- Constraints for table `players`
 --
 ALTER TABLE `players`
   ADD CONSTRAINT `G` FOREIGN KEY (`id_guild`) REFERENCES `guilds` (`id`);
 
 --
--- Ograniczenia dla tabeli `reports`
+-- Constraints for table `reports`
 --
 ALTER TABLE `reports`
   ADD CONSTRAINT `SOURCE` FOREIGN KEY (`id_source`) REFERENCES `players` (`id`),
   ADD CONSTRAINT `TARGET` FOREIGN KEY (`id_target`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `unit_queue`
+-- Constraints for table `unit_queue`
 --
 ALTER TABLE `unit_queue`
   ADD CONSTRAINT `UNIT` FOREIGN KEY (`id_unit`) REFERENCES `units` (`id`),
   ADD CONSTRAINT `VLG` FOREIGN KEY (`id_village`) REFERENCES `villages` (`id`);
 
 --
--- Ograniczenia dla tabeli `villages`
+-- Constraints for table `villages`
 --
 ALTER TABLE `villages`
   ADD CONSTRAINT `PLAYER` FOREIGN KEY (`id_player`) REFERENCES `players` (`id`);
 
 --
--- Ograniczenia dla tabeli `village_buildings`
+-- Constraints for table `village_buildings`
 --
 ALTER TABLE `village_buildings`
   ADD CONSTRAINT `BUILDING` FOREIGN KEY (`id_building`) REFERENCES `buildings` (`id`),
   ADD CONSTRAINT `VILLAGE` FOREIGN KEY (`id_village`) REFERENCES `villages` (`id`);
 
 --
--- Ograniczenia dla tabeli `village_units`
+-- Constraints for table `village_units`
 --
 ALTER TABLE `village_units`
   ADD CONSTRAINT `UNT` FOREIGN KEY (`id_unit`) REFERENCES `units` (`id`),

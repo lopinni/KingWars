@@ -53,10 +53,15 @@ class KWC extends Controller
 										->where('id_player',$pid->id)
 										->orderBy('name')
 										->first();
-					session()->put('active_village',
-								['id'=>$base_village->id,
-								'name'=>$base_village->name]);
-					return redirect('village_view');
+					if ($base_village == NULL){
+						return redirect('/village_view');
+					}
+					else{
+						session()->put('active_village',
+									['id'=>$base_village->id,
+									'name'=>$base_village->name]);
+						return redirect('village_view');
+					}
 				}
 		}
 		return redirect('error1');
@@ -79,10 +84,9 @@ class KWC extends Controller
 				'login'=>$name,
 				'email'=>$email,
 				'password'=>$password,
-				'salt'=>0,
 				'points'=>0
 			]);
-			$pid = DB::table('users')
+			$pid = DB::table('players')
 						->select('id')
 						->where('login', $name)
 						->first();
@@ -110,8 +114,10 @@ class KWC extends Controller
 	}
 
 
-	public function new_village($name, $direction){
-		$pid = session('data'['LID1']);
+	public function new_village($direction){
+		$pid = session('data'['LID1']); 
+		$village_c = DB::table('villages') -> select('count id_player as count')->where("id_player", $pid);
+		
 		$x_arr = DB::table('villages')
 		->select('x_coordinate');
 		$y_arr = DB::table('villages')
@@ -119,7 +125,7 @@ class KWC extends Controller
 		$x;
 		$y;
 		switch($direction){
-			case 1:
+			case 1://NW
 				do{
 					$x = rand(1, 50);
 					$y = rand(1, 50);
@@ -197,6 +203,8 @@ class KWC extends Controller
 				return redirect('village_view');
 			break;
 		}
+		
+		$name = "wioska nr".$village_c." gracza ". session('data')['LM1'];
 		$id_v = DB::table('villages')->insertGetId(['name' => $name, 'x_coordinate' => $x, 'y_coordinate' => $y, 'id_player' => $pid, 'steel' => 0, 'wood' => 0, 'brick' => 0]);
 
 		DB::table('village_units')-> insert(['id_unit' => 1, 'number' => 0, 'availible' => 0, 'id_village' -> $id_v],
@@ -204,8 +212,69 @@ class KWC extends Controller
 											['id_unit' => 3, 'number' => 0, 'availible' => 0, 'id_village' -> $id_v],
 											['id_unit' => 4, 'number' => 0, 'availible' => 0, 'id_village' -> $id_v],
 											['id_unit' => 5, 'number' => 0, 'availible' => 0, 'id_village' -> $id_v]);
+		DB::table('village_buildings')-> insert( ['id_building' => 1, 'level' => 1, 'id_village' -> $id_v],
+												 ['id_building' => 5, 'level' => 1, 'id_village' -> $id_v],
+												 ['id_building' => 9, 'level' => 1, 'id_village' -> $id_v],
+												['id_building' => 13, 'level' => 1, 'id_village' -> $id_v],
+												['id_building' => 17, 'level' => 1, 'id_village' -> $id_v],
+												['id_building' => 21, 'level' => 1, 'id_village' -> $id_v]);
+		session()->put('active_village',
+		['id'=>$id_v,
+		'name'=>$name]);
+		return redirect('/village_view');
+	}
 
+	public function attack(Request $request){
 		
+		$vid = session('active_village')['id'];
+		$tgt = session('village_inspect')['id'];
+		$pikes = filter_var(intval($request->pikes));
+		$swords = filter_var(intval($request->swords));
+		$axes = filter_var(intval($request->axes));
+		$knights = filter_var(intval($request->knights));
+		$attack_loss_coeficcient = 0.2;
+		$defender_loss_coefficient = 0.25;
+
+		$pike_stats = DB::table('units')->select('attack, defense')->where('name', 'pikinier')->first();
+		$sword_stats = DB::table('units')->select('attack, defense')->where('name', 'miecznik')->first();
+		$axe_stats = DB::table('units')->select('attack, defense')->where('name', 'topornik')->first();
+		$knights_stats = DB::table('units')->select('attack, defense')->where('name', 'rycerz')->first();
+
+		$enemy_pikes = DB::table('village_units')->select('number')->where('id_village', $tgt)->where('id_unit', 1)->first();
+		$enemy_swords = DB::table('village_units')->select('number')->where('id_village', $tgt)->where('id_unit', 2)->first();
+		$enemy_axes = DB::table('village_units')->select('number')->where('id_village', $tgt)->where('id_unit', 3)->first();
+		$enemy_knights = DB::table('village_units')->select('number')->where('id_village', $tgt)->where('id_unit', 4)->first();
+
+
+		$attack = $pikes*$pike_stats->attack+$axes*$axe_stats->attack+$swords*$sword_stats->attack+$knights*$knight_stats->attack;
+		$defense = $enemy_pikes->number*$pike_stats->defense+$enemy_axes->number*$axe_stats->defense+$enemy_swords->number*$sword_stats->defense+$enemy_knights->number*$knight_stats->defense;
+
+		if ($attack == $defense){
+			session()->forget('village_inspect');
+			return redirect("/village_view");
+		}
+
+		if ($attack > $defense ){
+			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 1)->decrement('number', round($enemy_pikes*$defender_loss_coefficient));
+			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 2)->decrement('number', round($enemy_swords*$defender_loss_coefficient));
+			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 3)->decrement('number', round($enemy_axes*$defender_loss_coefficient));
+			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 4)->decrement('number', round($enemy_knights*$defender_loss_coefficient));
+			session()->forget('village_inspect');
+			return redirect("/village_view");
+		}
+		if ($attack < $defense){
+			DB::table('village_units')->where('id_village', $vid)->where('id_unit', 1)->decrement('number', round($pikes*$attack_loss_coefficient));
+			DB::table('village_units')->where('id_village', $vid)->where('id_unit', 2)->decrement('number', round($swords*$attack_loss_coefficient));
+			DB::table('village_units')->where('id_village', $vid)->where('id_unit', 3)->decrement('number', round($axes*$attack_loss_coefficient));
+			DB::table('village_units')->where('id_village', $vid)->where('id_unit', 4)->decrement('number', round($knights*$attack_loss_coefficient));
+			session()->forget('village_inspect');
+			return redirect("/village_view");
+		}
+		else{
+			session()->forget('village_inspect');
+			return redirect("/village_view");
+		}
+
 	}
 	
 }

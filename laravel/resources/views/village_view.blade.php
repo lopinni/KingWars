@@ -105,32 +105,34 @@
 							->where('name', 'koszary')
 							->first();
 		
-		$unit_pikeman = DB::table('village_units as vu')
-							->join('units as u', 'vu.id_unit', 'u.id')
+		$unit_pikeman = DB::table('village_units')
 							->select('number')
-							->where('vu.id_village', session('active_village')['id'])
-							->where('u.name', 'pikinier')
+							->where('id_village', session('active_village')['id'])
+							->where('id_unit', '1')
 							->first();
 
-		$unit_sordman = DB::table('village_units as vu')
-							->join('units as u', 'vu.id_unit', 'u.id')
+		$unit_pikeman = DB::table('village_units')
 							->select('number')
-							->where('vu.id_village', session('active_village')['id'])
-							->where('u.name', 'miecznik')
+							->where('id_village', session('active_village')['id'])
+							->where('id_unit', '2')
 							->first();
 		
-		$unit_axman = DB::table('village_units as vu')
-							->join('units as u', 'vu.id_unit', 'u.id')
+		$unit_pikeman = DB::table('village_units')
 							->select('number')
-							->where('vu.id_village', session('active_village')['id'])
-							->where('u.name', 'topornik')
+							->where('id_village', session('active_village')['id'])
+							->where('id_unit', '3')
 							->first();
 
-		$unit_knight = DB::table('village_units as vu')
-							->join('units as u', 'vu.id_unit', 'u.id')
+		$unit_pikeman = DB::table('village_units')
 							->select('number')
-							->where('vu.id_village', session('active_village')['id'])
-							->where('u.name', 'rycerz')
+							->where('id_village', session('active_village')['id'])
+							->where('id_unit', '4')
+							->first();
+		
+		$unit_pikeman = DB::table('village_units')
+							->select('number')
+							->where('id_village', session('active_village')['id'])
+							->where('id_unit', '5')
 							->first();
 
         @endphp
@@ -205,10 +207,11 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"> Jednostki </h5>
-							<p class="card-text"> Pikinierzy: {{$unit_pikeman ?? 0}}</p>
-							<p class="card-text"> Miecznicy: {{$unit_sordman ?? 0}}</p>
-							<p class="card-text"> Topornicy: {{$unit_axman ?? 0}}</p>
-							<p class="card-text"> Rycerze: {{$unit_knight ?? 0}}</p>
+							<p class="card-text"> Pikinierzy: {{$unit_pikeman->number ?? 0}}</p>
+							<p class="card-text"> Miecznicy: {{$unit_sordman->number ?? 0}}</p>
+							<p class="card-text"> Topornicy: {{$unit_axman->number ?? 0}}</p>
+							<p class="card-text"> Rycerze: {{$unit_knight->number ?? 0}}</p>
+							<p class="card-text"> Osadnicy: {{$unit_knight->number ?? 0}}</p>
 
 							<h5 class="card-title"> Raporty </h5>
 							<p class="card-text"> Tu będą raporty. </p>
@@ -297,7 +300,7 @@
 									@if ($soldier_quarry == NULL)
 										0
 									@else
-										{{$soldier_quarry ->level}}
+										{{$soldier_quarry->level}}
 									@endif
 										. </p>
 									<a href=" {{ url("/barracks") }} "
@@ -354,7 +357,7 @@
 									@if ($palace == NULL)
 										0
 									@else
-										{{$palace ->level}}
+										{{$palace->level}}
 									@endif
 										. </p>
 									<a href=" {{ url("/palace") }} "

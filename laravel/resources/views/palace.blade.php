@@ -34,18 +34,35 @@
 
     </head>
 	
+	@php
+	$osadnik = DB::table('units')
+					->select('name','cost_steel','cost_wood')
+					->where('id',5)->first();
+	$resources = DB::table('villages')->select('steel', 'wood', 'brick')->where('id', session('active_village')['id'])->first();
+	$palace = DB::table('village_buildings as vb') 
+							->join('buildings as b', 'vb.id_building', 'b.id')
+							->select('vb.level as level')
+							->where('vb.id_village', session('active_village')['id'])
+							->where('name', 'pałac')
+							->orderByDesc('vb.level')
+							->first();
+	@endphp
+	
 	<body>
 	
 		<div class="container" style="padding-top:30px;">
 			<div class="container" style="background-color:wheat">
 				<div class="container" style="padding-top:10px;">
 					<div class="container" style="background-color:lightgrey;">
-						<h4 class="text-center"> Surowce: (drewno)X, (stal)X, (cegła)X </p>
+						<h4 class="text-center">
+							Surowce: drewno {{$resources->wood ?? 0}},
+								stal {{$resources->steel ?? 0}},
+								cegła {{$resources->brick ?? 0}}
 					</div>
 				</div>
 				<div class="jumbotron" style="background-color:wheat">
-					<h1 class="display-5"> Pałac (poziom X) (max poziom 3) </h1>
-					<hr class="my-4">
+					<h1 class="display-5"> Pałac poziom {{$palace->level}} </h1>
+					<!-- <hr class="my-4">
 					<h3> Kolejka rekrutacji </h3>
 					<table style="width:100%; background-color:lightgrey;">
 						<tr>
@@ -60,27 +77,68 @@
 							<td> (hh:mm:ss) </td>
 							<td> (przycisk/link anuluj) </td>
 						</tr>
-					</table>
+					</table> -->
 					<hr class="my-4">
 					<h3> Rekrutacja </h3>
 					<table style="width:100%; background-color:lightgrey;">
 						<tr>
 							<th> Jednostki </th>
 							<th> Wymagania </th>
-							<th> Czas rekrutacji </th>
+							<th> Ilość </th>
 							<th> Rekrutuj </th>
 						</tr>
 						<tr>
-							<td> (osadnik) </td>
-							<td> (drewno)X, (stal)X, (cegła)X </td>
-							<td> (hh:mm::ss) </td>
-							<td> (przycisk/link rekrutuj) </td>
+							<td> {{$osadnik->name}} </td>
+							<td> {{$osadnik->cost_steel}} stali, {{$osadnik->cost_wood}} drewna </td>
+							<form method = "get">
+								<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+								<td>
+									<input type="number" class="form-control" id="osadnikN" name="osadnikN">
+								</td>
+								<td> <button type="submit"
+											class="btn btn-primary"
+											name="osadnikB"
+											id="osadnikB">
+										Rekrutuj
+									</button>
+								</td>
+							</form>
 						</tr>
 					</table> 
 				</div>
 			</div>
 		</div>
 	
+		<?php
+			if(isset($_GET['osadnikB'])) {
+				$ilosc = filter_var(intval($_GET['osadnikN']),
+							FILTER_SANITIZE_NUMBER_INT);
+				$wwiosce = DB::table('village_units')->select('number')
+								->where('id_unit',1)
+								->where('id_village',session('active_village')['id'])
+								->first();
+				if($resources->steel >= ($ilosc*$osadnik->cost_steel) &&
+					$resources->wood >= ($ilosc*$osadnik->cost_wood)){
+					DB::table('village_units')
+						->where('id_unit',1)
+						->where('id_village',session('active_village')['id'])
+						->update([
+							'number' => ($wwiosce->number + $ilosc),
+							'available' => ($wwiosce->number + $ilosc)
+						]);
+					DB::table('villages')
+						->where('id',session('active_village')['id'])
+						->update([
+							'steel' => ($resources->steel - $osadnik->cost_steel*$ilosc),
+							'wood' => ($resources->wood - $osadnik->cost_wood*$ilosc)
+						]);
+				}
+				else echo '<script type="text/JavaScript">
+							alert("Za mało surowców");
+						</script>';
+			}
+		?>
+		
 	</body>
 	
 </html>

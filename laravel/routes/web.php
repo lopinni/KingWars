@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KWC;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::get('/new_village', function () {
 });
 
 Route::get('/village_view', 'KWC@first_village');
+
+Route::get('/nv/{id}', [KWC::class, 'new_village']);
 
 Route::get('/village_view/{id}', function ($id){
 
@@ -104,6 +107,10 @@ Route::get('/barracks', function () {
 Route::get('/palace', function () {
    return view('palace');
 });
+
+
+Route::post('/attack', "KWC@attack");
+
 
 
 Route::post('cache_village', 'KWC@cache_village');
