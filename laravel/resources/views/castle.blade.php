@@ -159,59 +159,43 @@
 							<th> Konstruuj </th>
 						</tr>
 						
-						@foreach ($buildings as $b) @unless (DB::table('buildings')
-																->select('name')
+						@foreach ($buildings as $b) @unless (DB::table('buildings')->select('name')
 																->where('id',$b->id_building+$b->level)
 																->first() == NULL)
 						<tr>
-							<td> @php echo(DB::table('buildings')
-												->select('name')
-												->where('id',$b->id_building)
-												->first()->name);
+							<td> @php echo(DB::table('buildings')->select('name')
+												->where('id',$b->id_building)->first()->name);
 								@endphp </td>
 							<td> {{$b->level+1}} </td>
 							<td> @php echo("Cegła: ".
-											DB::table('buildings')
-												->select('cost_brick')
+											DB::table('buildings')->select('cost_brick')
 												->where('id',$b->id_building+$b->level)
 												->first()->cost_brick.
 											" Drewno: ".
-											DB::table('buildings')
-												->select('cost_wood')
+											DB::table('buildings')->select('cost_wood')
 												->where('id',$b->id_building+$b->level)
 												->first()->cost_wood);
 								@endphp </td>
-							<td>
-								<form action = "/Build" method = "post">
-									<input type = "hidden"
-											name = "_token"
-											value = "<?php echo csrf_token(); ?>">
-									<input type = "hidden"
-											name = "idBuilding"
-											value = "<?php echo($b->id_building); ?>">
-									<input type = "hidden"
-											name = "idVillage"
-											value = "<?php echo(session()->get('active_village')['id']); ?>">
-									@if($resources->brick >= DB::table('buildings')
-																->select('cost_brick')
+							<td> <form action = "/Build" method = "post">
+									<input type = "hidden" name = "_token"
+										value = "<?php echo csrf_token(); ?>">
+									<input type = "hidden" name = "idBuilding"
+										value = "<?php echo($b->id_building); ?>">
+									<input type = "hidden" name = "idVillage"
+										value = "<?php echo(session()->get('active_village')['id']); ?>">
+									@if($resources->brick >= DB::table('buildings')->select('cost_brick')
 																->where('id',$b->id_building+$b->level)
 																->first()->cost_brick &&
-										$resources->wood >= DB::table('buildings')
-																->select('cost_wood')
+										$resources->wood >= DB::table('buildings')->select('cost_wood')
 																->where('id',$b->id_building+$b->level)
 																->first()->cost_wood)
-									<button type="submit"
-											class="btn btn-danger">
-										Buduj
-									</button>
+										<button type="submit" class="btn btn-danger"> Buduj </button>
 									@else
-									<button type="button"
-											class="btn disabled btn-danger">
-										Buduj
-									</button>
+										<button type="button" class="btn disabled btn-danger">
+											Buduj
+										</button>
 									@endif
-								</form>
-							</td>
+								</form> </td>
 						</tr>
 						@endunless @endforeach
 						
