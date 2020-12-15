@@ -134,6 +134,7 @@ Route::post('/br', 'KWC@battle_raport');
 
 Route::post('/attack', "KWC@attack");
 
+Route::post('Build', "Playercontroller@build");
 
 Route::post('cache_village', 'KWC@cache_village');
 

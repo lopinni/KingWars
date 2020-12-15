@@ -207,14 +207,32 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"> Jednostki </h5>
-							<p class="card-text"> Pikinierzy: {{$unit_pikeman->number }}</p>
-							<p class="card-text"> Miecznicy: {{$unit_swordman->number }}</p>
-							<p class="card-text"> Topornicy: {{$unit_axeman->number }}</p>
-							<p class="card-text"> Rycerze: {{$unit_knight->number}}</p>
-							<p class="card-text"> Osadnicy: {{$unit_settler->number }}</p>
+							<div class="alert alert-secondary" role="alert">
+								<p class="card-text"> Pikinierzy: {{$unit_pikeman->number }}</p>
+								<p class="card-text"> Miecznicy: {{$unit_swordman->number }}</p>
+								<p class="card-text"> Topornicy: {{$unit_axeman->number }}</p>
+								<p class="card-text"> Rycerze: {{$unit_knight->number}}</p>
+								<p class="card-text"> Osadnicy: {{$unit_settler->number }}</p>
+							</div>
 
 							<h5 class="card-title"> Raporty </h5>
-							<p class="card-text"> Tu będą raporty. </p>
+							@php
+								$reports = DB::select('select * from reports order by id desc limit 4');
+							@endphp
+									
+							@foreach ($reports as $rep)
+					
+								@if ($rep->id_source == $uname->id)
+									<div class="alert alert-warning" role="alert">
+								@else
+									<div class="alert alert-danger" role="alert">	
+								@endif
+										<h5> {{ $rep->sent }} - {{ $rep->type }} </h5>
+										<hr class="my-1">
+										{{ $rep->content }}
+									</div>
+					
+							@endforeach
 						</div>
 					</div>
 				</div>
@@ -272,7 +290,7 @@
 											</button>
 											<input type = "hidden"
 													name = "addedBrick"
-													value = "<?php echo(($brick_quarry->level)*1000*$hours); ?>">
+													value = "<?php echo(($brick_quarry->level)*10*$hours); ?>">
 											<input type = "hidden"
 													name = "villageID"
 													value = "<?php echo(session()->get('active_village')['id']); ?>">
@@ -329,7 +347,7 @@
 											</button>
 											<input type = "hidden"
 													name = "addedSteel"
-													value = "<?php echo(($steel_quarry->level)*1000*$hours); ?>">
+													value = "<?php echo(($steel_quarry->level)*10*$hours); ?>">
 											<input type = "hidden"
 													name = "villageID"
 													value = "<?php echo(session()->get('active_village')['id']); ?>">
@@ -386,7 +404,7 @@
 											</button>
 											<input type = "hidden"
 													name = "addedWood"
-													value = "<?php echo(($wood_quarry->level)*1000*$hours); ?>">
+													value = "<?php echo(($wood_quarry->level)*10*$hours); ?>">
 											<input type = "hidden"
 													name = "villageID"
 													value = "<?php echo(session()->get('active_village')['id']); ?>">
@@ -409,9 +427,23 @@
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"> Wiadomości </h5>
-							<p class="card-text"> Tu będą wiadomości. </p>
+							<div class="alert alert-success" role="alert">
+								<p class="card-text"> Tu będą wiadomości. </p>
+							</div>
 							<h5 class="card-title"> Aktualności </h5>
-							<p class="card-text"> Tu będą aktualności. </p>
+							@php
+								$news = DB::select('select date, content from news order by id desc limit 4');
+							@endphp
+									
+							@foreach ($news as $update)
+					
+							<div class="alert alert-info" role="alert">
+								<h5> {{ $update->date }} </h5>
+								<hr class="my-1">
+								{{ $update->content }}
+							</div>
+					
+							@endforeach
 						</div>
 					</div>
 				</div>

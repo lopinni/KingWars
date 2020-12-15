@@ -124,7 +124,7 @@
                 ?>
 
 
-        <div class="container" style="background-color:rgba(245, 222, 179, 0.096)">
+        <div class="container mapa" style="background-color:rgba(245, 222, 179, 0.096)">
             <div class="container text-center"><h4>Atakujesz wioskę {{$tgt_data->name}}. </h4> </div>
             <div class="container text-center padding-top: 20px">
                 <h5>wybierz, które jednostki wysyłasz do ataku.

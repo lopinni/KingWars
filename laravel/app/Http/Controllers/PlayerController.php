@@ -79,4 +79,33 @@ class PlayerController extends Controller
 					'last_collected' => date("Y-m-d h:i:s")]);
 		return view('village_view');
 	}
+	
+	public function build(Request $request) {
+		$idBuilding = intval($request->input('idBuilding'));
+		$idVillage = intval($request->input('idVillage'));
+		$level = intval(DB::table('village_buildings')
+						->select('level')
+						->where('id_building',$idBuilding)
+						->where('id_village',$idVillage)
+						->first()->level);
+		DB::table('villages')
+				->where('id',$idVillage)
+				->decrement('brick',
+					DB::table('buildings')
+						->select('cost_brick')
+						->where('id',$idBuilding+$level)
+						->first()->cost_brick);
+		DB::table('villages')
+				->where('id',$idVillage)
+				->decrement('wood',
+					DB::table('buildings')
+						->select('cost_wood')
+						->where('id',$idBuilding+$level)
+						->first()->cost_wood);
+		DB::table('village_buildings')
+					->where('id_building',$idBuilding)
+					->where('id_village',$idVillage)
+					->increment('level',1);
+		return view('castle');
+	}
 }

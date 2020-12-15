@@ -117,7 +117,7 @@
 					
 				?>
 				
-				<div class="container">
+				<div class="container mapa">
 					<div class="container text-center"><h4> {{$tgt_data->vname}}. </h4> </div>
 					<div class="container text-center">
 						<div class="container padding-top: 20px"> Lokacja na mapie: {{$tgt_data->x}}, {{$tgt_data->y}}.</div>

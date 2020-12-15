@@ -351,11 +351,24 @@ class KWC extends Controller
 		$enemy_knights->number*
 		$knight_stats->defense;
 
-		
+		DB::table('reports')
+			->insert([
+				['type' => 'walka',
+				'content' => DB::table('villages')->select('name')
+								->where('id',$vid)->first()->name.
+								' atakuje '.
+								DB::table('villages')->select('name')
+								->where('id',$tgt)->first()->name,
+				'id_source' => DB::table('villages')->select('id_player')
+								->where('id',$vid)->first()->id_player,
+				'id_target' => DB::table('villages')->select('id_player')
+								->where('id',$tgt)->first()->id_player,
+				'sent' => date("Y-m-d h:i:s"),
+				'arrival' => date("Y-m-d h:i:s")]
+		]);
 
 		if ($attack == $defense){
-			
-			return redirect("/br");
+			return redirect("/village_view");
 		}
 
 		if ($attack > $defense ){
@@ -373,7 +386,7 @@ class KWC extends Controller
 							alert("Zwycięstwo!");
 						</script>';
 			
-			return redirect("/br");
+			return redirect("/village_view");
 		}
 		if ($attack < $defense){
 			DB::table('village_units')->where('id_village', $vid)->where('id_unit', 1)->decrement('number', round($pikes*$attack_loss_coefficient));
@@ -385,13 +398,12 @@ class KWC extends Controller
 			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 2)->decrement('number', round($enemy_swords->number*$defender_victory_coefficient));
 			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 3)->decrement('number', round($enemy_axes->number*$defender_victory_coefficient));
 			DB::table('village_units')->where('id_village', $tgt)->where('id_unit', 4)->decrement('number', round($enemy_knights->number*$defender_victory_coefficient));
+			
 			echo '<script type="text/JavaScript">
 							alert("Porażka!");
 						</script>';
 
-
-			
-			return redirect("/br");
+			return redirect("/village_view");
 		}
 		else{//to nie powinno się stać(else awaryjny)
 			

@@ -43,7 +43,7 @@
 		#lista wiosek użytkownika
 		$village_list = DB::table('villages')->select('id','name')->where('id_player', $uname->id)->orderBy('name')->get();
 
-		$resources = DB::table('villages')->select('steel', 'wood', 'brick')->where('id', session('active_village')['id']);
+		$resources = DB::table('villages')->select('steel', 'wood', 'brick')->where('id', session('active_village')['id'])->first();
 
 
 	@endphp
@@ -110,11 +110,28 @@
 			<div class="container" style="background-color:wheat">
 				<div class="container" style="padding-top:10px;">
 					<div class="container" style="background-color:lightgrey;">
-						<h4 class="text-center"> Surowce: drewno {{$resources->wood ?? 0}}, stal {{$resources->steel ?? 0}}, cegła {{$resources->brick ?? 0}}  </p>
+						<h4 class="text-center">
+							Surowce: drewno {{$resources->wood ?? 0}},
+							stal {{$resources->steel ?? 0}},
+							cegła {{$resources->brick ?? 0}}
 					</div>
 				</div>
+				
+				@php
+					$buildings = DB::table('village_buildings')
+										->select('id_building','level')
+										->where('id_village',session()->get('active_village')['id'])->get();
+					$castle = DB::table('village_buildings')
+										->select('level')
+										->where('id_village',session()->get('active_village')['id'])
+										->where('id_building',1)->first();
+				@endphp
+				
 				<div class="jumbotron" style="background-color:wheat">
-					<h1 class="display-5"> Siedziba główna wioski (poziom X) </h1>
+					<h1 class="display-5">
+						Siedziba główna wioski (poziom {{$castle->level}})
+					</h1>
+					<!--
 					<hr class="my-4">
 					<h3> Kolejka konstrukcji </h3>
 					<table style="width:100%; background-color:lightgrey;">
@@ -130,22 +147,74 @@
 							<td> (hh:mm:ss) </td>
 							<td> (przycisk/link anuluj) </td>
 						</tr>
-					</table>
+					</table> -->
+					
 					<hr class="my-4">
 					<h3> Konstrukcja </h3>
 					<table style="width:100%; background-color:lightgrey;">
 						<tr>
 							<th> Budynki </th>
+							<th> Poziom </th>
 							<th> Wymagania </th>
-							<th> Czas konstrukcji </th>
 							<th> Konstruuj </th>
 						</tr>
+						
+						@foreach ($buildings as $b) @unless (DB::table('buildings')
+																->select('name')
+																->where('id',$b->id_building+$b->level)
+																->first() == NULL)
 						<tr>
-							<td> (budynek, poziom) </td>
-							<td> (drewno)X, (stal)X, (cegła)X </td>
-							<td> (hh:mm::ss) </td>
-							<td> (przycisk/link konstruuj) </td>
+							<td> @php echo(DB::table('buildings')
+												->select('name')
+												->where('id',$b->id_building)
+												->first()->name);
+								@endphp </td>
+							<td> {{$b->level+1}} </td>
+							<td> @php echo("Cegła: ".
+											DB::table('buildings')
+												->select('cost_brick')
+												->where('id',$b->id_building+$b->level)
+												->first()->cost_brick.
+											" Drewno: ".
+											DB::table('buildings')
+												->select('cost_wood')
+												->where('id',$b->id_building+$b->level)
+												->first()->cost_wood);
+								@endphp </td>
+							<td>
+								<form action = "/Build" method = "post">
+									<input type = "hidden"
+											name = "_token"
+											value = "<?php echo csrf_token(); ?>">
+									<input type = "hidden"
+											name = "idBuilding"
+											value = "<?php echo($b->id_building); ?>">
+									<input type = "hidden"
+											name = "idVillage"
+											value = "<?php echo(session()->get('active_village')['id']); ?>">
+									@if($resources->brick >= DB::table('buildings')
+																->select('cost_brick')
+																->where('id',$b->id_building+$b->level)
+																->first()->cost_brick &&
+										$resources->wood >= DB::table('buildings')
+																->select('cost_wood')
+																->where('id',$b->id_building+$b->level)
+																->first()->cost_wood)
+									<button type="submit"
+											class="btn btn-danger">
+										Buduj
+									</button>
+									@else
+									<button type="button"
+											class="btn disabled btn-danger">
+										Buduj
+									</button>
+									@endif
+								</form>
+							</td>
 						</tr>
+						@endunless @endforeach
+						
 					</table> 
 				</div>
 			</div>
