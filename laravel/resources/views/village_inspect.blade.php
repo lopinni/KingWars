@@ -25,15 +25,13 @@
 				background-attachment: fixed;
 				background-size: 100% 100%;
             }
-			img {
-				width: 100%;
-				height: auto;
-				padding-top: 1px;
-				padding-bottom: 1px;
-				padding-left: 1px;
-				padding-right: 1px;
+			.profil { padding-top: 30px; }
+			.profil2 {
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 10px;
+				padding-right: 10px;
 			}
-			.mapa { padding-top: 30px; }
         </style>
 		<link
 			rel="stylesheet"
@@ -106,8 +104,9 @@
             </nav>
         </header>
 		
-		<div class="container inspect">
-			<div style="background-color:rgba(245, 222, 179, 0.096)">
+		<div class="container profil">
+			<div style="background-color:antiquewhite">
+				<div class="container profil2">
 				
 				<?php
 				$tgt_id = session()->get('village_inspect')['id'];
@@ -117,17 +116,74 @@
 					
 				?>
 				
-				<div class="container mapa">
 					<div class="container text-center"><h4> {{$tgt_data->vname}}. </h4> </div>
 					<div class="container text-center">
-						<div class="container padding-top: 20px"> Lokacja na mapie: {{$tgt_data->x}}, {{$tgt_data->y}}.</div>
-
+						<div class="container padding-top: 20px "> Lokacja na mapie: {{$tgt_data->x}}, {{$tgt_data->y}}.</div>
 						<a href=/attack_form><button type="button"
 							class="btn btn-dark">
 							zaatakuj
 						</button></a>
-
 					</div>
+					<hr class="my-1">
+					<div class="container msg">
+					<form action = "/MsgSnd" method = "post">
+						<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+					<br/>
+					<div class="form-group">
+						<label for="msg"> Wyślij wiadomość </label>
+						<input type="text"
+							class="form-control"
+							placeholder="temat wiadomości"
+							id="mst"
+							name="mst">
+							<input type="text"
+							class="form-control"
+							placeholder="treść wiadomości"
+							id="msg"
+							name="msg">
+							<button type="button"
+							class="btn btn-warning"
+							data-toggle="modal"
+							data-target="#modal">
+							Wyślij
+							</button>
+							<div class="modal fade"
+							id="modal"
+							tabindex="-1"
+							role="dialog"
+							aria-labelledby="exampleModalLabel"
+							aria-hidden="true">
+							
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title"
+											id="exampleModalLabel">
+										Wiadomość </h5>
+									<button type="button"
+											class="close"
+											data-dismiss="modal"
+											aria-label="Close">
+										<span aria-hidden="true"> &times; </span>
+									</button>
+								</div>
+								<div class="modal-body">
+									Cy na pewno chcesz wysłać wiadomość?
+								</div>
+								<div class="modal-footer">
+									<button type="button"
+									class="btn btn-secondary"
+									data-dismiss="modal">
+									Anuluj
+									<button type="submit" class="btn btn-dark">
+										Ok
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</form>
+				</div>
 				</div>
 
 

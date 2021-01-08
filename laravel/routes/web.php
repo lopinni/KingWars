@@ -130,6 +130,10 @@ Route::get('/attack_form', function () {
     return view('attack_form');
 });
 
+
+
+Route::post('/MsgSnd', 'KWC@send_message');
+
 Route::post('/br', 'KWC@battle_raport');
 
 Route::post('/attack', "KWC@attack");

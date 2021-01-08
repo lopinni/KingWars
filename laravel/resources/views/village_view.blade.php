@@ -56,7 +56,8 @@
 		
 		@php
 		$user= session('data')['LM1'];
-        $uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+		$uname=DB::table('players')->select('id','login')->where('login', $user)->orWhere('email', $user)->first();
+		
 		 
 		$av = session('active_village')['id'];
 		#lista wiosek użytkownika
@@ -218,20 +219,19 @@
 							<h5 class="card-title"> Raporty </h5>
 							@php
 								$reports = DB::select('select * from reports order by id desc limit 4');
-							@endphp
-									
-							@foreach ($reports as $rep)
-					
+							@endphp	
+							@foreach ($reports as $rep)	
 								@if ($rep->id_source == $uname->id)
 									<div class="alert alert-warning" role="alert">
-								@else
+								@elseif ($rep->id_target == $uname->id)
 									<div class="alert alert-danger" role="alert">	
 								@endif
+								@if ($rep->id_source == $uname->id || $rep->id_target == $uname->id)
 										<h5> {{ $rep->sent }} - {{ $rep->type }} </h5>
 										<hr class="my-1">
 										{{ $rep->content }}
 									</div>
-					
+								@endif
 							@endforeach
 						</div>
 					</div>
@@ -426,10 +426,6 @@
 				<div class="col-md-3">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title"> Wiadomości </h5>
-							<div class="alert alert-success" role="alert">
-								<p class="card-text"> Tu będą wiadomości. </p>
-							</div>
 							<h5 class="card-title"> Aktualności </h5>
 							@php
 								$news = DB::select('select date, content from news order by id desc limit 4');
@@ -444,6 +440,27 @@
 							</div>
 					
 							@endforeach
+							<h5 class="card-title"> Wiadomości </h5>
+							@php
+								$pid = session('data')['LID1'];
+								$msgs = DB::table('messages')->select('subject', 'content', 'id_from')
+											->where('id_to', $pid)->orderBy('messages.id')->limit(12)->get();
+							@endphp
+							@if ($msgs != NULL)
+								@foreach ($msgs as $msglist)
+									@php
+										$nm = DB::table('players')->select('login')
+													->where('id', $msglist->id_from)->first();
+									@endphp
+									<div class="alert alert-success" role="alert">
+										<h5> {{ $nm->login }} </h5>
+										<hr class="my-1">
+										<strong> {{ $msglist->subject }} </strong>
+										<hr class="my-1">
+										{{ $msglist->content }}
+									</div>
+								@endforeach
+							@endif
 						</div>
 					</div>
 				</div>

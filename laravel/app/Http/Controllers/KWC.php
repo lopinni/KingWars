@@ -117,9 +117,9 @@ class KWC extends Controller
 
 	public function new_village($direction){
 
-		$pid = session()->get('data')['LID1'];
-		$av = session()->get('active_village')['id'];	
-		if ($av!= NULL){
+		$pid = session()->get('data')['LID1'];	
+		if (session()->get('active_village') != NULL){
+			$av = session()->get('active_village')['id'];
 			$legal_check = DB::table('village_units')->select('number')->where('id_village', $av)->where('id_unit', 5)->first();
 			if ($legal_check == NULL || $legal_check->number == 0){
 				
@@ -415,6 +415,18 @@ class KWC extends Controller
 	public function battle_report(){
 
 
+	}
+
+	public function send_message(Request $request){
+		$message = filter_var(strval($request->input('msg')),FILTER_SANITIZE_STRING);
+		$subject = filter_var(strval($request->input('mst')),FILTER_SANITIZE_STRING);
+		$source = session('data')['LID1'];
+		$tgt_v = session('village_inspect')['id'];
+		$tgt_actual = DB::table('villages')
+							->select('id_player')->where('id', $tgt_v)->first();
+		DB::table('messages')->insert(['subject'=>$subject,'content'=>$message,
+								'id_from'=>$source,'id_to'=>$tgt_actual->id_player]);
+		return redirect('village_view');
 	}
 	
 }
