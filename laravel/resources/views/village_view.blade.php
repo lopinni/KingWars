@@ -453,9 +453,9 @@
 													->where('id', $msglist->id_from)->first();
 									@endphp
 									<div class="alert alert-success" role="alert">
-										<h5> {{ $nm->login }} </h5>
+										<h5> Nadawca: {{ $nm->login }} </h5>
 										<hr class="my-1">
-										<strong> {{ $msglist->subject }} </strong>
+										<strong> Temat: {{ $msglist->subject }} </strong>
 										<hr class="my-1">
 										{{ $msglist->content }}
 									</div>

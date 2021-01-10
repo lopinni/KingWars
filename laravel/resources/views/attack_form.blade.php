@@ -25,15 +25,13 @@
 				background-attachment: fixed;
 				background-size: 100% 100%;
             }
-			img {
-				width: 100%;
-				height: auto;
-				padding-top: 1px;
-				padding-bottom: 1px;
-				padding-left: 1px;
-				padding-right: 1px;
+			.profil { padding-top: 30px; }
+			.profil2 {
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 10px;
+				padding-right: 10px;
 			}
-			.mapa { padding-top: 30px; }
         </style>
 		<link
 			rel="stylesheet"
@@ -124,10 +122,13 @@
                 ?>
 
 
-        <div class="container mapa" style="background-color:rgba(245, 222, 179, 0.096)">
+        <div class="container profil">
+			<div style="background-color:antiquewhite">
+				<div class="container profil2">
             <div class="container text-center"><h4>Atakujesz wioskę {{$tgt_data->name}}. </h4> </div>
             <div class="container text-center padding-top: 20px">
                 <h5>wybierz, które jednostki wysyłasz do ataku.
+				<hr class="my-1">
                 <div class="container padding-top: 20px"></div>
                 <form action = "/attack" method = "post">
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
@@ -165,7 +166,7 @@
                 </button>
                 </form>
             </div>
-        </div>
+        </div> </div> </div>
 		
 
     </body>
